@@ -1,0 +1,19 @@
+{
+  "name": "kadyrov_daniel_assignment6",
+  "version": "1.0.0",
+  "description": "CS554 Assignment 6",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"node worker/index.js\" \"node server/index.js\""
+  },
+  "author": "Daniel Kadyrov 10455680",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bluebird": "^3.7.1",
+    "concurrently": "^5.0.0",
+    "express": "^4.17.1",
+    "node-redis-pubsub": "^4.0.0",
+    "node-uuid": "^1.4.8"
+  }
+}

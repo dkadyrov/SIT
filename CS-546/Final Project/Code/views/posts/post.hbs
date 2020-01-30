@@ -1,0 +1,17 @@
+<head>
+    <meta charset="utf-8">
+    <title>Post - {{post.title}}</title>
+
+    <script src="https://kit.fontawesome.com/72bf814016.js"></script>
+    {{!-- <link rel='stylesheet' href="/public/css/posts.css"> --}}
+</head>
+
+<body>
+    <main>
+        <div class="card card-panel">
+            {{#each posts}}
+                {{> post }}
+            {{/each}}
+        </div>
+    </main>
+</body>

@@ -1,0 +1,63 @@
+<div class="card card-post" id="post">
+    <div class="card-body">
+        <h5 class"card-title"><a href="/posts/post/{{this._id}}">{{this.title}}</a></h5>
+
+
+        {{#if this.video }}
+            <div class="video">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{this.url}}" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        {{/if}}
+
+        {{#if this.image}}
+            <img class="post-image" src="{{this.url}}" alt="post image">
+        {{/if}}
+
+        <div class="card-text" s>
+
+            {{this.content}}
+
+        </div>
+
+    </div>
+    <div class="card-footer">
+        <a class="btn share btn-light" href="mailto:?subject=Check Out iBlgr&body=iblgr.com/posts/post/{{this._id}}">
+            <span class="fas fa-mail-bulk"></span>
+        </a>
+
+        <a class="btn share btn-light" href="https://www.facebook.com/sharer/sharer.php?u=iblgr.com/posts/post/{{this._id}}">
+            <span class="fab fa-facebook-f"></span>
+        </a>
+
+        <a class="btn share btn-light" href="https://twitter.com/intent/tweet?text=iblgr.com/posts/post/{{this._id}}">
+            <span class="fab fa-twitter"></span>
+        </a>
+
+        {{#if this.liked}}
+        <form class="btn-post" method="post" action="/posts/unlike">
+            <button class="btn share btn-light" id="unlikePost" name="id" value={{this._id}}>
+                <span class="fas fa-thumbs-up"></span>
+            </button>
+        </form>
+        {{/if}}
+        {{#if this.notliked}}
+        <form class="btn-post" method="post" action="/posts/like">
+            <button class="btn share btn-light" id="likePost" name="id" value={{this._id}}>
+                <span class="far fa-thumbs-up"></span>
+            </button>
+        </form>
+        {{/if}}
+        {{#if this.deletable}}
+        <form class="btn-post" method="post" action="/posts/delete">
+            <button id="deletePost" name="id" class="btn share btn-light" value={{this._id}}>
+                <span class="fas fa-trash-alt"></span>
+            </button>
+        </form>
+        {{/if}}
+
+        <a class="btn btn-light" href="/users/{{this.author.username}}">
+            <span class="fas fa-user"></span> {{this.author.username}}
+        </a>
+    </div>
+</div>

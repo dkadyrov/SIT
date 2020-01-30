@@ -1,0 +1,26 @@
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel='stylesheet' href="/public/css/site.css">
+
+</head>
+
+<body>
+    <main>
+        <h1>Login </h1>
+        <form id="login-form" action="/login" method="post">
+            <label for="username">Enter User Name</label>
+            <input name="username" id="username" type="text" placeholder="Enter Username">
+            <label for ="password">Enter Password</label>
+            <input name="password" id="password" type="password" placeholder="Enter Password">
+            <button type="submit" value="Submit">Submit</button>
+        </form>
+        
+        <div class="error">
+            {{#if error}}
+            <p>{{error}}</p>
+            {{/if}}
+        </div>
+
+    </main>
+</body>

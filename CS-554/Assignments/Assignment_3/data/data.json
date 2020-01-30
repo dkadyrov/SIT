@@ -1,0 +1,119 @@
+[{
+        "id": 1,
+        "title": "CS541",
+        "image": {
+            "file": "/public/images/cs541.jpg",
+            "url": "Photo by Franck V. on Unsplash"
+        },
+        "description": "Artificial Intelligence",
+        "detail": "Course on Artificial Intelligence. I have not started or completed it yet.",
+        "grade": "",
+        "projects": []
+    },
+    {
+        "id": 2,
+        "title": "CS546",
+        "image": {
+            "file": "/public/images/cs546.jpg",
+            "url": "Photo by Sai Kiran Anagani on Unsplash"
+        },
+        "description": "Web Programming I",
+        "detail": "Course on the basics of web programming including using HTML, CSS, and JavaScript with packages like Node, Express, and Handlebars to build websites.",
+        "grade": "A-",
+        "projects": ["iBlog"]
+    },
+    {
+        "id": 3,
+        "title": "CS549",
+        "image": {
+            "file": "/public/images/cs549.jpg",
+            "url": "Photo by imgix on Unsplash"
+        },
+        "description": "Distributed Systems and Cloud Computing",
+        "detail": "Course on distributed environments. I have not started or completed it yet.",
+        "grade": "",
+        "projects": []
+    },
+    {
+        "id": 4,
+        "title": "CS550",
+        "image": {
+            "file": "/public/images/cs550.jpg",
+            "url": "Photo by Taylor Vick on Unsplash"
+        },
+        "description": "Computer Organization",
+        "detail": "Course on Computer Organization including structure of computers, assembly language programming, and computer history",
+        "grade": "A",
+        "projects": ["Smart Cards - Research Paper"]
+    },
+    {
+        "id": 5,
+        "title": "CS554",
+        "image": {
+            "file": "/public/images/cs554.jpg",
+            "url": "Photo by Pankaj Patel on Unsplash"
+        },
+        "description": "Web Programming II",
+        "detail": "Course on Web Programming including advanced client side programming, responsive design, NoSQL databases, JQuery, AJAX, and the latest frameworks",
+        "grade": "",
+        "projects": ["SIT Portfolio Website"]
+    },
+    {
+        "id": 6,
+        "title": "CS559",
+        "image": {
+            "file": "/public/images/cs559.jpg",
+            "url": "Photo by Franck V. on Unsplash"
+        },
+        "description": "Machine Learning: Fundamentals and Applications",
+        "detail": "Course on Machine Learning. I have not started or completed it yet."
+    },
+    {
+        "id": 7,
+        "title": "CS570",
+        "image": {
+            "file": "/public/images/cs570.jpg",
+            "url": "Photo by Markus Spiske on Unsplash"
+        },
+        "description": "Programming, Data Structures, and Algorithms",
+        "detail": "Course on Algorithms and Data Structures using Java.",
+        "grade": "",
+        "projects": []
+    },
+    {
+        "id": 8,
+        "title": "CS582",
+        "image": {
+            "file": "/public/images/cs582.jpg",
+            "url": "Photo by Mike Lewinski on Unsplash"
+        },
+        "description": "Casual Interference",
+        "detail": "Course on Casual Interference. I have not started or completed it yet.",
+        "grade": "",
+        "projects": []
+    },
+    {
+        "id": 9,
+        "title": "CS583",
+        "image": {
+            "file": "/public/images/cs583.jpg",
+            "url": "Photo by Tim Gouw on Unsplash"
+        },
+        "description": "Deep Learning",
+        "detail": "Course on Deep Learning. I have not started or completed it yet.",
+        "grade": "",
+        "projects": []
+    },
+    {
+        "id": 10,
+        "title": "CS597",
+        "image": {
+            "file": "/public/images/cs597.jpg",
+            "url": "Photo by Alvaro Reyes on Unsplash"
+        },
+        "description": "User Experience Design and Programming",
+        "detail": "Course on UI Design. I have not started or completed it yet.",
+        "grade": "",
+        "projects": []
+    }
+]

@@ -1,0 +1,16 @@
+{
+  "name": "cs-546-lab7",
+  "version": "1.0.0",
+  "description": "CS-546 Lab 7",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Daniel Kadyrov 10456178",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.2.7"
+  }
+}

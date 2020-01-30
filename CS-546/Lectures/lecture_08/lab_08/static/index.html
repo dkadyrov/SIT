@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+    <head>
+        <meta charset="utf-8">
+        <title>People Finder</title>
+        <link rel="stylesheet" href="/public/site.css">
+    </head>
+
+    <body>
+        <main>
+            <h1>People Finder</h1>
+            <p>This website satisfies the requirement of CS546. It uses node, express, and handlebars to provide a user the ability to search through a database of people recieved through axios. All the user has to do is enter a first or last name into the search bar and then magic happens.</p>
+
+            <form action="/search" method="post">
+                <label for="nameIn">Input Search Terms</label>
+                <input name="personName" type="text" id="nameIn">
+                <input type="submit" value="Submit">
+            </form>
+
+        </main>
+    </body>
+</html>

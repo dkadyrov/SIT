@@ -1,0 +1,14 @@
+{
+  "name": "cs-546-lab6",
+  "version": "1.0.0",
+  "description": "CS 546 Lab 6",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Daniel Kadyrov 10456178",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

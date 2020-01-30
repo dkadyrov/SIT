@@ -1,0 +1,14 @@
+{
+  "name": "cs-546-lab-4",
+  "version": "1.0.0",
+  "description": "CS-546 Lab 4",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node index.js"
+  },
+  "author": "Daniel Kadyrov 10456178",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.2.7"
+  }
+}

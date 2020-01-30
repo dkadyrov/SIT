@@ -1,0 +1,23 @@
+body {
+    font-family: sans-serif;
+    margin: 20vh;
+}
+
+h1 { 
+    text-align: center;
+}
+
+input {
+    display: block;
+    border: 1px block;
+    border-radius: 2px;
+    width: 300px;
+    margin-bottom: 10px;
+    height: 20px;
+}
+
+label{
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}

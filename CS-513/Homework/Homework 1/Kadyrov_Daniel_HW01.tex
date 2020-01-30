@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{Page \thepage}
+
+\usepackage{titlesec}
+\titleformat{\section}
+{\normalfont\Large\bfseries}{Problem~\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\normalfont\large\bfseries}{Part~\thesubsection}{1em}{}
+
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+
+\newcommand{\Title}{Homework \#1}
+\newcommand{\DueDate}{February 12, 2020}
+\newcommand{\ClassName}{Knowledge Discovery \& Data Mining}
+\newcommand{\ClassNumber}{CS513A}
+\newcommand{\ClassSection}{Spring 2020}
+\newcommand{\Instructor}{Professor Dehnad}
+
+\newenvironment{problem}{
+    \bfseries
+}
+
+%
+% Title Page
+%
+
+\title{
+    \Title \\
+    \vspace{2mm}
+    \large
+    Due on \DueDate \\
+    \ClassName \\ 
+    \ClassNumber  $-$\ClassSection \\
+    \Instructor
+}
+
+\author{Daniel Kadyrov}
+\date{}
+
+
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\section{}
+
+\begin{problem}
+    This is an example of a problem statement 
+
+\end{problem}
+
+\subsection{}
+
+\newpage
+\begin{problem}
+    problem 2
+\end{problem}
+\end{document}

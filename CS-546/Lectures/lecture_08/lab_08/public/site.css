@@ -1,0 +1,36 @@
+body { 
+    font-family: sans-serif;
+    margin: 10vh;
+}
+
+h1 { 
+    font-size: 5vh;
+    text-align: center;
+}
+
+h2 { 
+    font-size: 3vh;
+}
+
+label { 
+    font-weight: bold;
+}
+
+form { 
+    margin-top: 10vh;
+    text-align: center;
+}
+
+p { 
+    margin-right: 50vh;
+    text-align: justify;
+}
+
+dt { 
+    font-weight: bold;
+    /* margin: 10px; */
+}
+
+dd {
+    margin: 10px;
+}

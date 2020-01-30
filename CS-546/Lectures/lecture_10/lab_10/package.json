@@ -1,0 +1,19 @@
+{
+  "name": "cs546-lab10",
+  "version": "1.0.0",
+  "description": "CS546 Lab 10",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Daniel Kadyrov 10456178",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.16.2"
+  }
+}

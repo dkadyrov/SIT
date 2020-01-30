@@ -1,0 +1,30 @@
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel='stylesheet' href="/public/css/form.css">
+
+</head>
+
+<body>
+    <main>
+        <div class="card card-panel">
+            <form class="form" id="login-form" action="/login" method="post">
+                <div class="row">
+                <div class="col">
+                <label for="username">Enter User Name</label>
+                <input name="username" id="username" type="text" placeholder="Enter Username" class="form-control mb-4">
+                <label for="password">Enter Password</label>
+                <input name="password" id="password" type="password" placeholder="Enter Password" class="form-control mb-4">
+                <button class="btn btn-dark btn-block" type="submit">Login</button>
+                </div>
+                </div>
+            </form>
+
+            <div class="error">
+                {{#if error}}
+                <p>{{error}}</p>
+                {{/if}}
+            </div>
+        </div>
+    </main>
+</body>

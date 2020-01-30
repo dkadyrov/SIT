@@ -1,0 +1,3 @@
+3) What happens if the LMC is executing a program and never encounters a "HALT" command? (section 6.5)
+
+The HALT, or COFFEE BREAK, instruction is provided through the operation code 0. This command notifies that the program is complete. If the LMC never encounters a HALT command, the computer will continue running through the program until it encounters an invalid operation code like a location that begins with "4" or a location that contains "000" which is the HALT command. Since the computer will continue incrementing the program counter, if it goes past 99 to zero, it will enter an endless loop. 

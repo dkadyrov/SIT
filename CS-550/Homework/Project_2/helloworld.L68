@@ -1,0 +1,34 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 7/3/2019 11:13:14 AM
+
+00000000                             1  *---------------------------------------------
+00000000                             2  * Program : Hello World
+00000000                             3  * Written by: Daniel Kadyrov
+00000000                             4  * Date: July 7th, 2019
+00000000                             5  * Description: CS550 Assignment 7, Hello World
+00000000                             6  *---------------------------------------------
+00000000                             7  
+00001000                             8  START   ORG     $1000
+00001000                             9  
+00001000  43F9 00001012             10          LEA     MESSAGE,A1 
+00001006  103C 000E                 11          MOVE.B  #14,D0     
+0000100A  4E4F                      12          TRAP    #15       
+0000100C                            13  
+0000100C  103C 0009                 14      MOVE.B  #9,D0
+00001010  4E4F                      15      TRAP    #15
+00001012                            16  
+00001012= 48 45 4C 4C 4F 20 ...     17  MESSAGE DC.B    'HELLO WORLD',0
+0000101E                            18  
+0000101E                            19  
+0000101E                            20      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+MESSAGE             1012
+START               1000

@@ -1,0 +1,19 @@
+<head>
+    <meta charset="utf-8">
+    <title>Search Results</title>
+
+    <script src="https://kit.fontawesome.com/72bf814016.js"></script>
+    {{!-- <link rel='stylesheet' href="/public/css/posts.css"> --}}
+</head>
+
+<body>
+    <main>
+        <div class="card card-panel">
+            <div class="card-columns">
+                {{#each posts}}
+                    {{> post }}
+                {{/each}}
+            </div>
+        </div>
+    </main>
+</body>

@@ -1,0 +1,35 @@
+{
+  "name": "lecture_5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "seed": "node ./tasks/seed.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+<<<<<<< HEAD
+<<<<<<< HEAD
+    "express": "^4.17.1",
+<<<<<<< HEAD:Lectures/lecture_06/code/package.json
+    "mongodb": "^3.0.2",
+    "node-uuid": "^1.4.7"
+=======
+    "mongodb": "^3.2.7",
+    "uuid": "^3.3.2"
+>>>>>>> upstream/master:Lectures/lecture_06/code/package.json
+=======
+    "express": "^4.16.2",
+    "mongodb": "^3.2.7",
+    "node-uuid": "^1.4.7"
+>>>>>>> upstream/master
+=======
+    "express": "^4.17.1",
+    "mongodb": "^3.3.0-beta2",
+    "uuid": "^3.3.2"
+>>>>>>> upstream/master
+  }
+}

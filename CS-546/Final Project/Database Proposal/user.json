@@ -1,0 +1,20 @@
+[{
+    "id": "user id",
+    "first-name": "first-name of user",
+    "last-name": "last-name of user",
+    "username": "username of user",
+    "password": "hashed password",
+    "email": "email of user",
+    "description": "user description",
+    "picture": "url to profile picture",
+    "posts": [
+        "postID1",
+        "postID2",
+        "..."
+    ],
+    "likes": [
+        "postID1",
+        "postID2",
+        "..."
+    ]
+}]

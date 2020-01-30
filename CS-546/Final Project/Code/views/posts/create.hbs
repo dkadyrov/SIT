@@ -1,0 +1,62 @@
+<head>
+    <meta charset="utf-8">
+    <title>Register</title>
+    <link rel='stylesheet' href="/public/css/form.css">
+
+    <script>
+        $(document).ready(function () {
+            toggleFields(); 
+            $("#postType").change(function () {
+                toggleFields();
+            });
+        });
+        function toggleFields() {
+            if ($("#postType").val() !== "text")
+                $("#url").show();
+            else
+                $("#url").hide();
+        }
+    </script>
+
+</head>
+
+<body>
+    <main>
+        <div class="card card-panel">
+            <form class="form" id="post-form" action="/posts/create" method="post">
+                <div class="row">
+                    <div class="col">
+                        <label for="title">Title</label>
+                        <input name="title" id="title" type="text" placeholder="Enter title" class="form-control mb-4">
+                        <div class="form-group">
+                            <label for="content">Description</label>
+                            <textarea name="content" id="content" rows="5" placeholder="A few lines"
+                                class="form-control mb-4"></textarea>
+                        </div>
+                        <div class="error">
+                            {{#if error}}
+                            <p>{{error}}</p>
+                            {{/if}}
+                        </div>
+                        <button class="btn btn-dark btn-block" type="submit">Create Post</button>
+                    </div>
+                    <div class="col">
+                        <label for="content">Post Type</label>
+                        <select id="postType" name="postType" class="form-control mb-4">
+                            <option value="text">Text</option>
+                            <option value="image">Image</option>
+                            <option value="video">Video</option>
+                        </select>
+                        <div id="url">
+                            <label for="url">Post URL</label>
+                            <input name="url" id="url" type="text" placeholder="Enter URL"
+                                class="form-control mb-4">
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </main>
+</body>

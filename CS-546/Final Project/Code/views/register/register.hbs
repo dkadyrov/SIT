@@ -1,0 +1,50 @@
+<head>
+    <meta charset="utf-8">
+    <title>Register</title>
+    <link rel='stylesheet' href="/public/css/form.css">
+
+</head>
+
+<body>
+    <main>
+        <div class="card card-panel">
+            <form class="form" id="register-form" action="/register" method="post">
+                <div class="row">
+                    <div class="col">
+                        <label for="firstname">First Name</label>
+                        <input name="first_name" id="first_name" type="text" placeholder="Enter First Name" class="form-control mb-4">
+
+                        <label for="username">Username</label>
+                        <input name="username" id="username" type="text" placeholder="Enter Username" class="form-control mb-4">
+
+                        <label for="email">Email</label>
+                        <input name="email" id="email" type="email" placeholder="Enter Email" class="form-control mb-4">
+
+                        <label for="picture">Profile Picture</label>
+                        <input name="picture" id="picture" type="text" placeholder="Enter Picture URL" class="form-control mb-4">
+
+                        <div class="error">
+                            {{#if error}}
+                            <p>{{error}}</p>
+                            {{/if}}
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <label for="lastname">Last Name</label>
+                        <input name="last_name" id="last_name" type="text" placeholder="Enter Last Name" class="form-control mb-4">
+
+                        <label for="password">Password</label>
+                        <input name="password" id="password" type="password" placeholder="Enter Password" class="form-control mb-4">
+
+                        <label for="description">Profile Description</label>
+                        <textarea name="description" id="description" rows="5" placeholder="A little bit about yourself" class="form-control mb-4"></textarea>
+
+                        <button class="btn btn-dark btn-block" type="submit">Sign Up</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </main>
+</body>

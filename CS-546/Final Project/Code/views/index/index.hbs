@@ -1,0 +1,30 @@
+<head>
+    <meta charset="utf-8">
+    <title>iBlgr</title>
+
+    <script src="https://kit.fontawesome.com/72bf814016.js"></script>
+    {{!-- <link rel='stylesheet' href="/public/css/posts.css"> --}}
+
+</head>
+
+<body>
+    <main>
+        <div class="card card-panel home">
+            <div class="card-columns">
+                {{#each posts}}
+                    {{> post}}
+                {{/each}}
+            </div>
+        </div>
+        <nav aria-label="Page">
+            <ul class="pagination justify-content-center">
+
+                {{#paginate pagination type="middle" limit="10"}}
+
+                <li class="page-item"><a class="page-link" href="?page={{n}}">{{n}}</a></li>
+
+                {{/paginate}}
+            </ul>
+        </nav>
+    </main>
+</body>

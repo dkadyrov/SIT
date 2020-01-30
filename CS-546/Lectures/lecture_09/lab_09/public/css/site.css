@@ -1,0 +1,62 @@
+main {
+    margin: 10vh;
+    font-family: sans-serif;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    height: 100%;
+    overflow: hidden
+}
+
+h1 { 
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5vh;
+}
+
+p { 
+    margin: 2vh;
+}
+
+ol li {
+    counter-increment: list;
+    list-style-type: none;
+    position: relative;
+}
+
+ol li:before {
+    color: black;
+    content: counter(list) ".";
+    left: -32px;
+    position: absolute;
+    text-align: right;
+    width: 26px;
+}
+
+.is-prime {
+    color: #00E676;
+}
+
+.not-prime { 
+    color: #FF3D00;
+}
+
+footer {
+    text-align: center;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: black;
+}
+
+.card { 
+    height: 70vh;
+    padding: 2vh;
+}
+
+.scroll { 
+    overflow-y: auto;
+}

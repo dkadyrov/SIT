@@ -1,0 +1,14 @@
+body {
+    margin: 10vh;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.list-group {
+    margin-bottom: 10px;
+}

@@ -1,0 +1,23 @@
+.card-profile { 
+    margin-top: 75px;
+    margin-left: 15px;
+    margin-right: 15px;
+    /* max-height: 200px; */
+    padding: 10px;
+}
+
+.card-posts { 
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    background: #A5B9CC;
+    padding: 20px;
+    overflow-y: auto;
+    height: 50vh;
+}
+
+.profile-image {
+    height: auto;
+    min-width: 200px;
+    max-width: 200px;
+}

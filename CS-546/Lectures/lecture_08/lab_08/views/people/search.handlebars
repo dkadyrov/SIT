@@ -1,0 +1,26 @@
+<head>
+    <meta charset="utf-8">
+    <title>People Found</title>
+    <link rel='stylesheet' href="/public/site.css">
+</head>
+
+<body>
+    <main>
+        <article class="people">
+            <h1>People Found</h1>
+            <h2>{{people.name}}</h2>
+            {{#if people.results.length}}
+            <ul>
+                {{#each people.results}}
+                <li>
+                    <a href="/details/{{this.id}}">{{this.firstName}} {{this.lastName}}</a>
+                </li>
+                {{/each}}
+            </ul>
+            {{else}}
+            <p class="not-found">We're sorry, but no results were found for {{people.name}}.</p>
+            {{/if}}
+        </article>
+        <a href="/">Make another search</a>
+    </main>
+</body>

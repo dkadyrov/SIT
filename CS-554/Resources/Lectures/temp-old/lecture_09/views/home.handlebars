@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="jumbotron">
+        <h1>Sample File Upload</h1>
+        <p class="lead">Here, we will use a very basic form for file uploading</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h4>File Upload</h4>
+            <form id="file-upload" method="POST" action="/files" enctype='multipart/form-data'>
+                <div class="form-group">
+                    <label for="imageToResize">File</label>
+                    <input type="file" id="imageToResize" accept="image/*" name="imageToResize">
+                    <p class="help-block">Please select an image.</p>
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <h4>File search</h4>
+            <form id="file-upload" method="GET" action="/files/listing">
+                <div class="form-group">
+                    <label for="imageToResize">Directory</label>
+                    <input type="text" id="folder"name="folder">
+                    <p class="help-block">Please tell me what folder you want to see.</p>
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2017 Phil Barresi</p>
+    </footer>
+
+</div>

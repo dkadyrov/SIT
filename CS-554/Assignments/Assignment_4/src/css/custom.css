@@ -1,0 +1,21 @@
+.title { 
+    text-align: center;
+    padding: 20px;
+    font-size: 30px;
+}
+
+.editor {
+    resize:none;
+    height:80vh;
+    width: 100%;
+    padding: 20px;
+}
+
+.card {
+    height: 80vh;
+    width: 100%;
+}
+
+.button {
+    margin: 20px;
+}

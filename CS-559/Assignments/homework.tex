@@ -1,0 +1,147 @@
+\documentclass{article}
+
+\usepackage{geometry}
+\geometry{letterpaper, margin=1in}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\ClassNumber}
+\chead{\Title}
+\rhead{Page \thepage}
+\lfoot{\Author}
+\cfoot{}
+\rfoot{\ClassName}
+
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
+% \usepackage[lighttt]{lmodern}
+\usepackage{courier}
+
+\usepackage{listings}
+\lstset{
+    numbers=left,
+    xleftmargin=2em,
+    frame=single,
+    framexleftmargin=0em,
+    basicstyle=\footnotesize\ttfamily,
+    xleftmargin=.075\textwidth,
+    xrightmargin=.01\textwidth,
+    numberstyle=\footnotesize\ttfamily,
+    upquote=true,
+    framesep=10pt,
+    numbersep=20pt,
+    keywordstyle=\bfseries,
+    stringstyle=\textit,
+    showstringspaces=false,
+    columns=fixed,
+}
+
+\newenvironment{problem}[1][]{
+    \textbf{Problem #1}\\
+    \linebreak
+    % \vspace{2mm}
+}{
+    \vspace{4mm}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution} \\
+    \linebreak
+    % \vspace{2mm}
+}{
+    \vspace{4mm}
+}
+
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+
+\newcommand{\Title}{Homework \#1}
+\newcommand{\DueDate}{February 11th, 2020}
+\newcommand{\ClassName}{Machine Learning}
+\newcommand{\ClassNumber}{CS559WS}
+\newcommand{\ClassSection}{Spring 2020}
+\newcommand{\Instructor}{Professor In Suk Jang}
+\newcommand{\Author}{Daniel Kadyrov}
+%
+% Title Page
+%
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsmath}
+
+\title{
+    \Title \\
+    \vspace{2mm}
+    \large
+    Due on \DueDate \\
+    \ClassName \\ 
+    \ClassNumber ---\ClassSection \\
+    \Instructor
+}
+
+\author{\Author}
+\date{}
+
+\usepackage{csquotes}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\section*{Probability Theory}
+
+\begin{problem}[1]
+    By using a change of variables, verify that the univariate Gaussian distribution given by
+
+    \begin{equation}
+        N(x|\mu,\sigma^2= \frac{1}{\sqrt{2\pi\sigma^2}} \exp{
+            \{
+            -\frac{1}{2\sigma^2}
+            (x-\mu)^2
+            \}
+        }
+    \end{equation}
+    
+    satisfies $E(x) = \mu$. Next, by differentiating both sides of normalization condition
+    
+    \begin{equation}
+        \int_{-\infty}^{-\infty} N(x|\mu,\sigma^2) dx = 1
+    \end{equation}
+    
+    with respect to $\sigma^2$, verify that the Gaussian satisfies $E(x^2) = \mu^2+\sigma^2$    
+\end{problem}
+
+\begin{solution}
+    Solution
+\end{solution}
+
+\section*{Linear Regression}
+
+
+\newpage
+\section*{Machine Learning}
+
+\begin{problem}[4]
+    Build at least four regression models (e.g., linear, polynomial, non-linear) to predict the count of total rental bikes including both casual and registered. Explore data to reduce the number of features. Use K-fold cross validation and report the mean squared error (MSE) on the testing data.
+\end{problem}
+
+\begin{solution}
+
+    \begin{lstlisting}[language=Python]
+    import numpy
+
+    for i in A:
+        print(A+"test")
+    \end{lstlisting}
+
+\end{solution}
+
+\begin{problem}[5A]
+
+\end{problem}
+
+\end{document}

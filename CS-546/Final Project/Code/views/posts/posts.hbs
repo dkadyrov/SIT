@@ -1,0 +1,69 @@
+<head>
+    <meta charset="utf-8">
+    <title>Search Results</title>
+
+    <script src="https://kit.fontawesome.com/72bf814016.js"></script>
+    {{!-- <link rel='stylesheet' href="/public/css/posts.css"> --}}
+</head>
+
+<body>
+    <main>
+        <div class="card card-panel">
+            <div class="card-columns">
+                {{#each posts}}
+                <div class="card card-post" id="post">
+                    <div class="card-body">
+                        <h5 class"card-title">{{this.title}}</h5>
+
+                        <div class="card-text" s>
+
+                            {{this.content}}
+
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn share btn-light">
+                            <span class="fas fa-mail-bulk"></span>
+                        </button>
+
+                        <button class="btn share btn-light">
+                            <span class="fab fa-facebook-f"></span>
+                        </button>
+
+                        <button class="btn share btn-light">
+                            <span class="fab fa-twitter"></span>
+                        </button>
+
+                        {{#if this.liked }}
+
+                        <button class="btn share btn-light">
+                            <span class="far fa-thumbs-up"></span>
+                        </button>
+
+                        {{else}}
+
+                        <button class="btn share btn-light">
+                            <span class="fas fa-thumbs-up"></span>
+                        </button>
+
+                        {{/if}}
+
+
+                        {{#if this.deletable }}
+                        <form method="post" action="/posts/delete">
+                            <button id="deletePost" name="id" class="btn share btn-light" value={{this._id}}>
+                                <span class="fas fa-trash-alt"></span>
+                            </button>
+                        </form>
+                        {{/if}}
+
+                        <a class="btn btn-light" href="/users/{{this.author.username}}">
+                            <span class="fas fa-user"></span> {{this.author.username}}
+                        </a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </main>
+</body>

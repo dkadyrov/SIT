@@ -1,0 +1,19 @@
+{
+  "name": "redis-demo",
+  "version": "1.0.0",
+  "description": "A worker role for our recipe creation",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Phil Barresi",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "express": "^4.14.1",
+    "flat": "^2.0.1",
+    "node-redis": "^0.1.7",
+    "redis": "^2.6.5"
+  }
+}

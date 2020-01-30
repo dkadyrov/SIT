@@ -1,0 +1,3 @@
+# 2) Describe the technique called code-morphing.(section 8.1)
+
+Code morphing is a technique that converts complex variable width instruction words to simple fixed-width internal equivalents. Legacy computers architectures are categorized into CISC, complex instruction set computers, and RISC, reduced instruction set computers based on their organization, design, and features. Through time, the two different architectures implemented counterpart features. To match CISC, RITC instruction sets became more complex and increased in size while CISC registers increased in number and flexibility. Code morphing allows for interchange between the two systems, using modern processing routines with these legacy architectures, and can provide faster execution time.

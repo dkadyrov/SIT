@@ -1,0 +1,26 @@
+{
+  "name": "cs-546-boilerplate",
+  "version": "1.0.0",
+  "description": "A boilerplate to use in CS-546 assignments; will be updated",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stevens-CS546/Boilerplate.git"
+  },
+  "author": "Phil Barresi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Stevens-CS546/Boilerplate/issues"
+  },
+  "homepage": "https://github.com/Stevens-CS546/Boilerplate#readme",
+  "dependencies": {
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "mongodb": "^3.3.0-beta2",
+    "uuid": "^3.3.2"
+  }
+}

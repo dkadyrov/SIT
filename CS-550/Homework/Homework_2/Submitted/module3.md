@@ -1,0 +1,5 @@
+# Why is "metadata" important?
+
+Metadata is important because it provides descriptive information about a file beyond its made up data. This information can be used by the system to appropriately run or process the data. In audio files, the metadata can provide information like sampling rate or organizational information including title, artist, album, and genre. Metadata in image files allows for accurate reproduction of the image using information about image type, number of colors, the relative scaling, and the number of horizontal and verticle data points. The metadata of the file can also be used for optimization, like knowing the number of characters in a text file can indicate when to use different parsing methods to increase reading performance. 
+
+Englander, I. (2014). The architecture of computer hardware, systems software, & networking : An information technology approach(Fifth ed.). Hoboken, NJ: John Wiley & Sons.

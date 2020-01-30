@@ -1,0 +1,7 @@
+[{
+    "title": "title of post",
+    "author": "user._id",
+    "content": "content of post",
+    "type": "type of post",
+    "url": "url of content"
+}]
