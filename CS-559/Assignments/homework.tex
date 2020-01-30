@@ -26,7 +26,7 @@
     framexleftmargin=0em,
     basicstyle=\footnotesize\ttfamily,
     xleftmargin=.075\textwidth,
-    xrightmargin=.01\textwidth,
+    xrightmargin=.075\textwidth,
     numberstyle=\footnotesize\ttfamily,
     upquote=true,
     framesep=10pt,
@@ -35,6 +35,7 @@
     stringstyle=\textit,
     showstringspaces=false,
     columns=fixed,
+    breaklines=true,
 }
 
 \newenvironment{problem}[1][]{
@@ -131,14 +132,18 @@
 
 \begin{solution}
 
-    \begin{lstlisting}[language=Python]
-    import numpy
+\begin{lstlisting}[language=Python]
+import numpy
 
-    for i in A:
-        print(A+"test")
-    \end{lstlisting}
+for i in A:
+    print(A+"test")
+\end{lstlisting}
 
 \end{solution}
+
+\hline
+
+\vspace{4mm}
 
 \begin{problem}[5A]
 
