@@ -1,5 +1,8 @@
 \documentclass{homework}
 
+\usepackage{booktabs}
+\usepackage{graphicx}
+
 \Title{Homework \#1}
 \DueDate{February 11th, 2020}
 \ClassName{Knowledge Discovery \& Data Mining}
@@ -25,10 +28,27 @@
 \end{problem}
 
 \begin{solution}
+    \begin{table}[h]
+        \centering
+        
+        \begin{tabular}{@{}l|l|l|l@{}}
+        & Susan at Bank & Susan not at Bank & \\
+        \midrule
+        Jerry at Bank & \textbf{8} & 12 & \textbf{20} \\
+        Jerry not at Bank & 22 & 58 & 80 \\
+        \midrule
+        & \textbf{30} & 70 & 100
+        \end{tabular}
+    \end{table}
 
-
+    \begin{enumerate}[label=\alph*.]
+        \item $P(\text{Jerry at Bank} / \text{Susan at Bank}) = 8 \% / 30 \% = 26.67 \%$
+        \item $P(\text{Jerry at Bank} / \text{Susan not at Bank}) = 12 \% / 70 \% = 17.14 \%$
+        \item $P(\text{Jerry $\cap$ Susan at Bank} / \text{Jerry $\cup$ Susan at Bank}) = 8 \% / (1 - 58\%) = 19.05 \%$
+    \end{enumerate}
 \end{solution}
 
+\newpage
 \begin{problem}[2]
     Harold and Sharon are studying for a test. Harold`s chances of getting a ``B'' are 80\%. Sharon's chances of getting a ``B'' are 90\%. The probability of at least one of them getting a ``B'' is 91\%.
 
@@ -39,11 +59,147 @@
     \end{enumerate}
 \end{problem}
 
+\begin{solution}
+    \begin{table}[h]
+        \centering
+        
+        \begin{tabular}{@{}l|l|l|l@{}}
+        & Sharon ``B'' & Sharon not ``B'' & \\
+        \midrule
+        Harold ``B'' & 79 & 1 & \textbf{80} \\
+        Harold not ``B'' & 11 & 9 & 20 \\
+        \midrule
+        & \textbf{90} & 10 & 100
+        \end{tabular}
+    \end{table}
+    
+    $$
+    \begin{aligned}
+    P(\text{Harold and Sharon}) & = P(\text{Harold}) + P(\text{Sharon}) - P(\text{Harold $\cup$ Sharon}) \\
+    & = 80 \% + 90 \% - 91 \% = 79 \%
+    \end{aligned}
+    $$
+
+    \begin{enumerate}[label=\alph*.]
+        \item $P(\text{Only Harold ``B''}) = P(\text{Harold ``B''}) - P(\text{Harold ``B'' $\cap$ Sharon not ``B''}) = 80 \% - 79 \% = 1 \%$
+        \item $P(\text{Only Sharon ``B''}) = P(\text{Sharon ``B''}) - P(\text{Sharon ``B'' $\cap$ Harold not ``B''}) = 90 \% - 79 \% = 11\%$
+        \item $P(\text{Harold $\cap$ Sharon not ``B''}) = 1 - 91\% = 9 \%$
+    \end{enumerate}
+
+\end{solution}
+
 \begin{problem}[3]
     Jerry and Susan have a joint bank account. Jerry goes to the bank 20\% of the days. Susan goes there 30\% of the days. Together they are at the bank 8\% of the days. Are the events ``Jerry is at the bank'' and ``Susan is at the bank'' independent?
 \end{problem}
 
+\begin{solution}
+    By definition, two events are independent if and only if: 
 
-\vspace{4mm}
+    \begin{equation}
+        P(A\text{ and } B) = P(A) \times P(B)
+    \end{equation}
+
+    In the situation described within the problem statement: 
+    
+    $$
+        P(A\text{ and } B) = 8 \% \neq 20 \% \times 30 \% = 60 \%
+    $$ 
+
+    Therefore, the statements ``Jerry is at the bank'' and ``Susan is at the bank'' are dependent.
+\end{solution}
+
+\newpage 
+
+\begin{problem}[4]
+    You roll 2 dice. 
+    \begin{enumerate}[label=\alph*.]
+        \item Are the events ``the sum is 6'' and ``the second die shows 5'' independent?
+        \item Are the events ``the sum is 7'' and ``the first die shows 5'' independent?
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \begin{enumerate}[label=\alph*.]
+        \item The events ``the sum is 6'' and ``the second die shows 5'' are dependent. 
+        $$
+        P(\text{Sum is 6}) = n(\{(3,3), (2,4), (4,2), (1,5), (5,1)\})/36 = 5/36
+        $$
+        $$
+        P(\text{Second die is 5}) = n(\{(1,5), (2,5), (3,5), (4,5), (5,5), (6,5)\})/36 = 6/36
+        $$
+        $$
+        P(\text{Sum is 6 $\cap$ second die is 5}) = n(\{(1,5)\})/36 = 1/36
+        $$
+        $$
+        1/36 \neq 5/36 \times 6/36 = 30/1296 = 5/216
+        $$
+
+        \item The events ``the sum is 7'' and ``the first die shows 5'' are dependent.
+        $$
+        P(\text{Sum is 7}) = n(\{(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)\}) = 6/36
+        $$
+        $$
+        P(\text{First die is 5}) = 6/36
+        $$
+        $$
+        P(\text{Sum is 7 $\cap$ first die is 5}) = 1/36
+        $$
+        $$
+        1/36 \neq 6/36 \times 1/36 = 1/216
+        $$
+    \end{enumerate}
+
+\end{solution}
+
+\newpage
+\begin{problem}[5]
+    An oil company is considering drilling in either TX, AK and NJ. The company may operate in only one state. There is 60\% chance the company will choose TX and 10\% chance - NJ. There is 30\% chance of finding oil in TX, 20\% - in AK, and 10\% - in NJ.
+
+    \begin{enumerate}
+        \item What’s the probability of finding oil?
+        \item The company decided to drill and found oil. What is the probability that they drilled in TX?
+    \end{enumerate}
+
+\end{problem}
+
+\begin{solution}
+    \begin{table}[h]
+        \centering
+        
+        \begin{tabular}{@{}l|l|l|l|l@{}}
+        & TX & AK & NJ & \\
+        \midrule
+        Oil & 18 & 6 & 1 & 25\\
+        No Oil & 42 & 24 & 9 & 75\\
+        \midrule
+        & \textbf{60} &  30 & \textbf{10} & 100
+        \end{tabular}
+    \end{table}
+
+    $$ 
+    P(\text{Oil} | \text{TX}) = 30 \% = P(\text{Oil} \cap \text{TX})/P(\text{TX}) = P(\text{Oil} \cap \text{TX})/60 \%
+    $$
+    $$
+    P(\text{Oil} \cap \text{TX}) = 30 \% \times 60 \% = 18\%
+    $$
+    $$ 
+    P(\text{Oil} | \text{NJ}) = 10 \% = P(\text{Oil} \cap \text{NJ})/P(\text{NJ}) = P(\text{Oil} \cap \text{NJ})/10 \%
+    $$
+    $$
+    P(\text{Oil} \cap \text{NJ}) = 10 \% \times 10 \% = 1\%
+    $$
+    $$ 
+    P(\text{Oil} | \text{AK}) = 30 \% = P(\text{Oil} \cap \text{AK})/P(\text{AK}) = P(\text{Oil} \cap \text{AK})/20 \%
+    $$
+    $$
+    P(\text{Oil} \cap \text{AK}) = 30 \% \times 20 \% = 6\%
+    $$
+
+    \begin{enumerate}
+        \item $P(\text{Oil}) = 25\%$
+        \item $P(\text{TX}/\text{Oil}) = 18\%/25\% = 0.72\%$
+    \end{enumerate}
+
+\end{solution}
 
 \end{document}
