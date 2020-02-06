@@ -6,7 +6,7 @@
 \Title{Homework \#1}
 \DueDate{February 11th, 2020}
 \ClassName{Knowledge Discovery \& Data Mining}
-\ClassNumber{CS513A}
+\ClassNumber{CS513B}
 \ClassSection{Spring 2020}
 \Instructor{Professor Khasha Dehnad}
 \Author{Daniel Kadyrov}
@@ -156,7 +156,7 @@
     An oil company is considering drilling in either TX, AK and NJ. The company may operate in only one state. There is 60\% chance the company will choose TX and 10\% chance - NJ. There is 30\% chance of finding oil in TX, 20\% - in AK, and 10\% - in NJ.
 
     \begin{enumerate}
-        \item What’s the probability of finding oil?
+        \item What's the probability of finding oil?
         \item The company decided to drill and found oil. What is the probability that they drilled in TX?
     \end{enumerate}
 
@@ -165,7 +165,6 @@
 \begin{solution}
     \begin{table}[h]
         \centering
-        
         \begin{tabular}{@{}l|l|l|l|l@{}}
         & TX & AK & NJ & \\
         \midrule
@@ -200,6 +199,100 @@
         \item $P(\text{TX}/\text{Oil}) = 18\%/25\% = 0.72\%$
     \end{enumerate}
 
+\end{solution}
+
+\newpage
+
+\begin{problem}[6]
+    The following tables show the survival status of individual passengers on the Titanic:
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{@{}l|l|l|l|l|l@{}}
+            & 1st & 2nd & 3rd & Crew & Sub Total \\
+            \midrule
+            Adult     & 197 & 94  & 151 & 212  & 654       \\
+            Child     & 6   & 24  & 27  &     & 57        \\
+            \midrule
+            Sub Total & 203 & 118 & 178 & 212  & 711      
+        \end{tabular}
+        \caption{Survived}
+    \end{table}
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{@{}l|l|l|l|l|l@{}}
+            & 1st & 2nd & 3rd & Crew & Sub Total \\
+            \midrule
+            Adult     & 122 & 167  & 476 & 673  & 1438       \\
+            Child     &    &   & 52  &    & 52        \\
+            \midrule
+            Sub Total & 122 & 167 & 528 & 673  & 1490      
+        \end{tabular}
+        \caption{Not Survived}
+    \end{table}
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{@{}l|l|l|l|l|l@{}}
+            & 1st & 2nd & 3rd & Crew & Sub Total \\
+            \midrule
+            Adult     & 319 & 261  & 627 & 885  & 2092       \\
+            Child     & 6   & 24  & 79  &     & 109        \\
+            \midrule
+            Sub Total & 325 & 285 & 706 & 885  & 2201      
+        \end{tabular}
+        \caption{Total}
+    \end{table}
+
+    Use this information to answer the following questions: 
+
+    \begin{enumerate}
+        \item What is the probability that a passenger did not survive? 
+        \item What is the probability that a passenger was staying in the first class?
+        \item Given that a passenger survived, what is the probability that the passenger was staying in the first class?
+        \item Are survival and staying in the first class independent?
+        \item Given that a passenger survived, what is the probability that the passenger was staying in the first class and the passenger was a child?
+        \item Given that a passenger survived, what is the probability that the passenger was an adult?
+        \item Given that a passenger survived, are age and staying in the first class independent? 
+    \end{enumerate}
+\end{problem}
+
+\newpage
+\begin{solution}
+
+    Assuming that passenger includes 1st, 2nd, 3rd, and crew members since the prompt states ``survival status of individual passengers'' when describing the table. 
+
+    \begin{enumerate}
+        \item $P(\text{Not Survived}) = 1490 / 2201 = 67.69\%$
+        \item $P(\text{First Class}) = 325 / 2201 = 14.77\%$
+        \item $P(\text{Survived} \cap \text{First Class}) = 203/711 = 28.55\%$
+        \item Surviving and staying in first class are dependent.
+            $$
+                P(\text{Survived}) = 711/2201 = 32.30\%
+            $$
+            $$
+                P(\text{First Class}) = 325/2201 = 14.77\%
+            $$
+            $$
+                P(\text{Survived} \cap \text{First Class}) = 203/711 = 28.55\% \neq 711/2201 \times 325/2201 = 4.77\%
+            $$
+        \item $P(\text{Survived} \cap \text{First Class} \cap \text{Child}) = 6/711 = 0.84 \%$
+        \item $P(\text{Survived} \cap \text{Adult}) = 654/711 = 91.98 \%$
+        \item Given that a passenger survived,  age and staying in the first class are dependent.
+            $$
+            P(\text{Survived} \cap \text{Adult}) = 654/711 = 91.98 \%
+            $$
+            $$
+                P(\text{Survived} \cap \text{First Class}) = 203/711 = 28.55 \%
+            $$
+            $$
+                P(\text{Survived} \cap \text{Adult} \cap \text{First Class}) = 197/711 = 27.70 \%
+            $$
+            $$
+                27.70 \% \neq P(\text{Survived} \cap \text{First Class}) \times P(\text{Survived} \cap \text{Adult} \cap \text{First Class})  = 26.26 \%
+            $$
+        \end{enumerate}
 \end{solution}
 
 \end{document}
