@@ -5,38 +5,59 @@
 
 \Title{Homework \#1}
 \DueDate{February 11th, 2020}
-\ClassName{Knowledge Discovery \& Data Mining}
-\ClassNumber{CS513A}
+\ClassName{Machine Learning}
+\ClassNumber{CS559WS}
 \ClassSection{Spring 2020}
-\Instructor{Professor Khasha Dehnad}
+\Instructor{Professor In Suk Jang}
 \Author{Daniel Kadyrov}
+\AuthorID{10455680}
 
 \begin{document}
 
 \maketitle
 
 \begin{problem}[1]
-    Jerry and Susan have a joint bank account. Jerry goes to the bank 20\% of the days.
-    Susan goes there 30\% of the days.
-    Together they are at the bank 8\% of the days.
-    \begin{enumerate}[label=\alph*.]
-        \item Susan was at the bank last Monday. What is the probability that Jerry was there too?
-        \item Last Friday, Susan was not at the bank. What's the probability that Jerry was there?
-        \item Last Wednesday at least one of them was at the bank. What is the probability that both of them were there?
-    \end{enumerate}
+    By using a change of variables, verify that the univariate Gaussian distribution given by:
+
+    $$
+    N(x \mid \mu , \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\{
+        -\frac{1}{2\sigma^2}(x-\mu)^2
+        \}
+    $$
+
+    satisfies $E(x) = \mu$. Next, by differentiating both sides of normalization condition
+
+    $$
+    \int_{-\infty}^{-\infty}N(x \mid \mu, \sigma^2) dx = 1
+    $$
+
+    with respect to $\sigma^2$, verify that the Gaussian satisfies $E(x^2)=\mu^2+\sigma^2$.
 \end{problem}
 
-\begin{solution}
+\begin{problem}[2]
+    Use $E(x) = \mu$ to prove $E(xx^T)=\mu\mu^T+\Sigma$. Now, using the results two definitions, show that:
+    
+    $$
+    E[x_n x_m] = \mu\mu^T + I_{nm}\Sigma
+    $$
 
-\begin{lstlisting}[language=Python]
-import numpy
+    where $x_n$ denotes a data point same from a Gaussian distribution with mean $\mu$ and covariance $\Sigma$,and $I_{nm}$ denotes the $(n,m)$ element of the identity matrix. Hence prove the result (2.124)
+\end{problem}
 
-for i in A:
-    print(A+"test")
-\end{lstlisting}
+\begin{problem}[3]
+    Consider a linear model of the form:
 
-\end{solution}
+    $$
+    f(x,w) = w_0 + \sum_{i=1}^D w_i x_i
+    $$
 
-\vspace{4mm}
+    together with a sum of squares/loss function of the form:
+
+    $$
+    L_D(w) = \frac{1}{2} \sum_{n=1}^{N} (f(x_n,w)-y_n)^2
+    $$
+
+    Now suppose that Gaussian noise $\epsilon_i$ with zero mean and variance $\sigma^2$ is added independently to each of the input variables $x_i$. By making use of $E[\epsilon_i]=0$ and $E[\epsilon_i \epsilon_j]=\delta_{ij}\sigma^2$, show that minimizing $L_D$ averaged over the noise distribution is equivalent to minimizing the sum of square error for noise-free input variables with the addition of a weight-decay regularization term, in which the bias parameters $w_0$ is omitted from the regularizer.
+\end{problem}
 
 \end{document}
