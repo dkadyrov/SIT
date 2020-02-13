@@ -1,9 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot as plt
-import statsmodels.api as sm
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.model_selection import KFold, train_test_split, cross_val_score, cross_val_predict
+from sklearn.linear_model import LinearRegression, Ridge, Lasso, BayesianRidge
+from sklearn.model_selection import KFold
 from sklearn import metrics
 import numpy as np
 
@@ -52,56 +50,40 @@ def make_graphs():
             plt.savefig("images/day_{}.png".format(day.columns[col]))
             plt.clf()
 
+crossvalidation = KFold(n_splits=10)
+linear = LinearRegression()
+ridge = Ridge()
+lasso = Lasso()
+bayesian = BayesianRidge()
 
-def linear_regression(): 
+for train_index, test_index in crossvalidation.split(day_temp):
+    X_train, X_test = day_temp[train_index], day_temp[test_index]
+    y_train, y_test = cnt_day[train_index], cnt_day[test_index]
+    linear.fit(X_train, y_train)
+    ridge.fit(X_train, y_train)
+    lasso.fit(X_train, y_train)
+    # bayesian.fit(X_train, y_train)
     
-    crossvalidation = KFold(n_splits=5) #, random_state=1, shuffle=False)
-    day_temp_model = LinearRegression()
 
-    for train_index, test_index in crossvalidation.split(day_temp):
-        X_train, X_test = day_temp[train_index], day_temp[test_index]
-        y_train, y_test = cnt_day[train_index], cnt_day[test_index]
-        day_temp_model.fit(X_train, y_train)
+linear_pred = linear.predict(X_test)
+ridge_pred = ridge.predict(X_test)
+lasso_pred = lasso.predict(X_test)
+# bayesian_pred = bayesian.predict(X_test)
 
-    day_temp_pred = day_temp_model.predict(X_test)
+mse_linear = metrics.mean_squared_error(y_test, linear_pred)
+mse_ridge = metrics.mean_squared_error(y_test, ridge_pred)
+mse_lasso = metrics.mean_squared_error(y_test, lasso_pred)
+# mse_bayesian = metrics.mean_squared_error(y_test, bayesian_pred)
 
-    mse = metrics.mean_squared_error(y_test, day_temp_pred)
+plt.figure()
+plt.scatter(day_temp, cnt_day)
+plt.plot(X_test, linear_pred, color="red", label=mse_linear)
+plt.plot(X_test, ridge_pred, color="purple", label=mse_ridge)
+plt.plot(X_test, lasso_pred, color="orange", label=mse_lasso)
+# plt.plot(X_test, bayesian_pred, color="green", label=mse_bayesian)
 
-    plt.figure()
-    plt.scatter(day_temp, cnt_day)
-    plt.plot(X_test, day_temp_pred, color="red", label=mse)
-    plt.title("Linear Regression: Day Temperature vs. Rider Count")
-    plt.xlabel("Temperature [deg C]")
-    plt.ylabel("Rider Count")
-    plt.legend()
-    plt.show()
-
-def polynomial_regression(): 
-
-    X_train, X_test, y_train, y_test = train_test_split(day_temp, cnt_day, test_size=0.2)
-
-    polynomial_features = PolynomialFeatures(degree=3)
-    day_temp_model = LinearRegression()
-
-    x_poly = polynomial_features.fit_transform(X_train)
-
-    day_temp_model.fit(x_poly, y_train)
-
-    day_temp_pred = day_temp_model.predict(X_test)
-
-    mse = metrics.mean_squared_error(y_test, day_temp_pred)
-
-    plt.figure()
-    plt.scatter(day_temp, cnt_day)
-    plt.plot(X_test, day_temp_pred, color="red", label=mse)
-    plt.title("Polynomial Regression: Day Temperature vs. Rider Count")
-    plt.xlabel("Temperature [deg C]")
-    plt.ylabel("Rider Count")
-    plt.legend()
-    plt.show()
-
-
-
-# polynomial_regression()
-def random_forest(): 
-    
+plt.title("Day Temperature vs. Rider Count")
+plt.xlabel("Temperature [deg C]")
+plt.ylabel("Rider Count")
+plt.legend()
+plt.show()
