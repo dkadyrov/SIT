@@ -1,6 +1,12 @@
-x <- 25
-x
+# Daniel Kadyrov
+# 
+# 
+# 
 
-hello <- "Hello World"
-print(hello)
-hello
+myfirstname <- "Daniel"
+myfirstname
+mylastname <- "Kadyrov"
+mylastname
+
+myfirstlast <- c(myfirstname, mylastname)
+myfirstlast 
