@@ -38,6 +38,16 @@
     with respect to $\sigma^2$, verify that the Gaussian satisfies $E(x^2)=\mu^2+\sigma^2$.
 \end{problem}
 
+\begin{solution}
+    $$
+    E(x) = \int_{-\infty}^{\infty} p(x|\mu, \sigma^2)x dx = E(x) = \int_{-\infty}^{\infty} \frac{x}{\sigma\sqrt{2\pi}}\exp\{-\frac{(x-\mu)^2}{2\sigma^2}\} dx
+    $$
+    $$
+    E(x) = \int_{-\infty}^{\infty} \frac{x-\mu}{\sigma\sqrt{2\pi}}\exp\{-\frac{x^2}{2\sigma^2}\} dx
+    $$
+
+\end{solution}
+
 \begin{problem}[2]
     Use $E(x) = \mu$ to prove $E(xx^T)=\mu\mu^T+\Sigma$. Now, using the results two definitions, show that:
     
