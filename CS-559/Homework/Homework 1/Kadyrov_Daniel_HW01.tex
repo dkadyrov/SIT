@@ -3,6 +3,11 @@
 \usepackage{graphicx}
 \usepackage{subfig}
 \usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{bbm}
+
+\captionsetup{compatibility=false}
 
 \title{Homework}
 \author{Daniel Kadyrov}
@@ -40,14 +45,51 @@
 
 \begin{solution}
     $$
-    E(x) = \int_{-\infty}^{\infty} p(x|\mu, \sigma^2)x dx = E(x) = \int_{-\infty}^{\infty} \frac{x}{\sigma\sqrt{2\pi}}\exp\{-\frac{(x-\mu)^2}{2\sigma^2}\} dx
+    E(x) = \int_{-\infty}^{\infty} p(x|\mu, \sigma^2)x dx = E(x) = \int_{-\infty}^{\infty} \frac{x}{\sigma\sqrt{2\pi}}\exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\right\} dx
     $$
     $$
-    E(x) = \int_{-\infty}^{\infty} \frac{x-\mu}{\sigma\sqrt{2\pi}}\exp\{-\frac{x^2}{2\sigma^2}\} dx
+    E(x) = \int_{-\infty}^{\infty} \frac{x-\mu}{\sigma\sqrt{2\pi}}\exp\left\{-\frac{x^2}{2\sigma^2}\right\} dx = 
+    \int_{-\infty}^{\infty} \frac{x}{\sigma\sqrt{2\pi}}\exp\{-\frac{x^2}{2\sigma^2}\} dx -
+    \int_{-\infty}^{\infty} \frac{\mu}{\sigma\sqrt{2\pi}}\exp\{-\frac{x^2}{2\sigma^2}\} dx
     $$
+
+    The first part of the integral: 
+
+    $$ 
+    -\int_{0}^{-\infty}x\frac{1}{\sigma\sqrt{2\pi}}\exp\left\{-\frac{x^2}{2\sigma^2}\right\}dx + \int_{0}^{\infty}x\frac{1}{\sigma\sqrt{2\pi}}\exp\left\{-\frac{x^2}{2\sigma^2}\right\}dx = 
+    $$
+    $$\int_{0}^{\infty}(-x)\frac{1}{\sigma\sqrt{2\pi}}\exp\left\{-\frac{(-x)^2}{2\sigma^2}\right\}dx + \int_{0}^{\infty}x\frac{1}{\sigma\sqrt{2\pi}}\exp\left\{-\frac{x^2}{2\sigma^2}\right\}dx =
+    $$
+    $$
+    -\int_{0}^{\infty}x\frac{1}{\sigma\sqrt{2\pi}}\exp\left\{-\frac{x^2}{2\sigma^2}\right\}dx + \int_{0}^{\infty}x\frac{1}{\sigma\sqrt{2\pi}}\exp\left\{-\frac{x^2}{2\sigma^2}\right\}dx = 0
+    $$
+
+    So now the integral is: 
+
+    $$
+    E(x) = \int_{-\infty}^{\infty}\mu\frac{1}{\sigma\sqrt{2\pi}}\exp\left\{-\frac{x^2}{2\sigma^2}\right\} dx = \frac{2\mu}{\sqrt{\pi}}\int_0^\infty e^{-x^2} dx
+    $$
+
+    $$
+    E(x) = \lim_{i \to \infty} \frac{2\mu}{\sqrt{\pi}} \int_0^i e^{-x^2} dx  = \mu \lim_{i \to \infty} \text{erf}(i) = \mu \Leftarrow
+    $$
+
+    $$
+    E(x)=\mu \rightarrow E(x)^2 = \mu^2
+    $$
+
+    $$ 
+    E(x^2) - E(x)^2 = E(x^2) - \mu^2 = \sigma^2
+    $$
+
+    $$ 
+    E(x^2) = \mu^2 + \sigma^2 \Leftarrow
+    $$
+
 
 \end{solution}
 
+\newpage
 \begin{problem}[2]
     Use $E(x) = \mu$ to prove $E(xx^T)=\mu\mu^T+\Sigma$. Now, using the results two definitions, show that:
     
@@ -58,6 +100,21 @@
     where $x_n$ denotes a data point same from a Gaussian distribution with mean $\mu$ and covariance $\Sigma$,and $I_{nm}$ denotes the $(n,m)$ element of the identity matrix. Hence prove the result (2.124)
 \end{problem}
 
+\begin{solution}
+    \begin{equation*}
+        \begin{split}
+            \Sigma   & = E[(x-E[x])(x-E[x])^T ] \\
+                & = E[xx^T-xE[x]^T - E[x]x^T + E[x]E[x]^T] \\
+                & = E[xx^T - x\mu^T -\mux^T +\mu\mu^T] \\
+                & = E[xx^T] - \mu\mu^T -\mu\mu^T + \mu\mu^T \\
+                & = E[xx^T] - \mu\mu^T
+        \end{split}
+    \end{equation*}
+    \begin{equation*}
+        E[xx^T] = \mu\mu^T + \Sigma \Leftarrow
+    \end{equation*}
+\end{solution}
+\newpage
 \begin{problem}[3]
     Consider a linear model of the form:
 
@@ -74,6 +131,32 @@
     Now suppose that Gaussian noise $\epsilon_i$ with zero mean and variance $\sigma^2$ is added independently to each of the input variables $x_i$. By making use of $E[\epsilon_i]=0$ and $E[\epsilon_i \epsilon_j]=\delta_{ij}\sigma^2$, show that minimizing $L_D$ averaged over the noise distribution is equivalent to minimizing the sum of square error for noise-free input variables with the addition of a weight-decay regularization term, in which the bias parameters $w_0$ is omitted from the regularizer.
 \end{problem}
 
+\begin{solution}
+    \begin{equation*}
+        y_n(x_n, w) = w_0 + \sum_{i=1}^D w_i(x_{ni}+\epsilon_{ni}) = w_0 + \sum_{i=1}^D w_i x_{ni}+\sum_{i=1}^D w_i \epsilon_{ni} = y(x_n, w) + \sum_{i=1}^D w_i
+    \end{equation*}
+    \begin{equation*}
+        \begin{split}
+    E_{dn}(w) & = \frac{1}{2} \sum_{n=1}^{N} (y_n(x_n, w) - t_n)^2 = \frac{1}{2} (y(x_n, w) + \sum_{i=1}^{D} w_d \epsilon_ni -t_n )^2 \\
+            & = \frac{1}{2} \sum_{n=1}^{N} ((y(x_n, w) - t_n)^2 + 2(y(x_n, w) - t_n)(\sum_{i=1}^{D} w_d \epsilon_{ni})+ (\sum_{i=1}^D w_d \epsilon_{ni})^2) 
+        \end{split}
+    \end{equation*}
+    \begin{equation*}
+        \mathbbm{E}(L_{Dn}(w)) = \frac{1}{2} \sum_{n=1}^{N} ( (y(x_n, w) -t_n)^2 + 2(y(x_n, w) - t_n)(\sum_{i=1}^D w_d \mathbbm{E}(\epsilon_{ni})) + \mathbbm{E}((\sum_{i=1}^{D} w_d \epsilon_{ni})^2))
+    \end{equation*}
+    $\mathbbm{E}(\epsilon_{ni}) = 0$ so: 
+    \begin{equation*}
+        \begin{split}
+            \mathbbm{E}((\sum_{i=1}^D w_d \epsilon_{ni})^2) & = \mathbbm{E}(\sum_{i_1=1}^D \sum_{i_2=1}^D w_{i_1} w_{i_2} \epsilon_{ni_1} \epsilon_{ni_2}) \\
+            & = \sum_{i_1=1}^D \sum_{i_2=1}^D w_{i_1} w_{i_2} \mathbbm{E}(\epsilon_{ni_1} \epsilon_{ni_2}) \\
+            & = \sum_{i_1=1}^D \sum_{i_2=1}^D w_{i_1} w_{i_2} \delta_{i_1 i_2} \\
+            & = \sum_{i=1}^D w_d^2 \\
+        \end{split}
+    \end{equation*}
+    \begin{equation*}
+        \mathbbm{E}(L_{Dn}(w)) = \frac{1}{2} \sum_{n=1}^{N} ((y(x_n, w) - t_n)^2 + \sum_{i=1}^D w_d^2) = L_D(w) + \frac{N}{2} \sum_{i=1}^D w_d^2 \Leftarrow
+    \end{equation*}
+
 \newpage
 \begin{problem}[4]
     \textbf{UCI Machine Learning: Bike Sharing Data Set}\\
@@ -84,7 +167,7 @@
 
 The necessary packages and files are imported into the Python script: 
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, firstnumber=10]
 import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, BayesianRidge
