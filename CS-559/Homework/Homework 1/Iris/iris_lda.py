@@ -16,6 +16,7 @@ plt.figure()
 for i, name in zip([0, 1, 2], names):
     plt.scatter(model[y == i, 0], model[y == i, 1], label=name)
 plt.legend()
+plt.title("Linear Discrimintant Analysis Iris Data")
 plt.xlabel("LD1")
 plt.ylabel("LD2")
-plt.show()
+plt.savefig('LDA.png')

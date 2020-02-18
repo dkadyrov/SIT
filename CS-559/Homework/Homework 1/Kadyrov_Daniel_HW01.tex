@@ -113,6 +113,12 @@
     \begin{equation*}
         E[xx^T] = \mu\mu^T + \Sigma \Leftarrow
     \end{equation*}
+
+    Since $I_{nm}\Sigma = \Sigma I_{nm} = \Sigma$: 
+
+    \begin{equation*}
+        E[xx^T] = \mu\mu^T+I_{nm}\Sigma
+    \end{equation*}
 \end{solution}
 \newpage
 \begin{problem}[3]
@@ -334,24 +340,130 @@ The following a table showing the different mean squared error values of the mod
     Bayesian & 4301889.80709847 \\
     \hline
     \end{tabular}
-    \end{table}
+\end{table}
 
-    \begin{figure}[h]
-        \centering
-        \begin{subfigure} 
-            \includegraphics[width=75mm]{Bike-Sharing-Dataset/images/linear.png}
-        \end{subfigure}
-        \begin{subfigure} 
-            \includegraphics[width=75mm]{Bike-Sharing-Dataset/images/ridge.png}
-        \end{subfigure}
-        \begin{subfigure} 
-            \includegraphics[width=75mm]{Bike-Sharing-Dataset/images/lasso.png}
-        \end{subfigure}
-        \begin{subfigure} 
-            \includegraphics[width=75mm]{Bike-Sharing-Dataset/images/bayesian.png}
-        \end{subfigure}
-        \end{figure}
+\newpage
+\begin{figure}[h]
+    \centering
+    \begin{subfigure} 
+        \includegraphics[width=75mm]{Bike-Sharing-Dataset/images/linear.png}
+    \end{subfigure}
+    \begin{subfigure} 
+        \includegraphics[width=75mm]{Bike-Sharing-Dataset/images/ridge.png}
+    \end{subfigure}
+    \begin{subfigure} 
+        \includegraphics[width=75mm]{Bike-Sharing-Dataset/images/lasso.png}
+    \end{subfigure}
+    \begin{subfigure} 
+        \includegraphics[width=75mm]{Bike-Sharing-Dataset/images/bayesian.png}
+    \end{subfigure}
+    \end{figure}
 
+\end{solution}
+
+\newpage
+\begin{problem}
+    UCI Machine Learning: Iris Data Set 
+    
+    \begin{enumerate}[label=\alph*.]
+        \item Implement Linear Discriminant Analysis for each pair of the classes and report your results. Note that there are three class labels in the data set. Write down each step of your solution.  
+ 
+        \item Perform the kNN classification for each k value from 1 to 50 to predict the species. For each k value, compute the percentage of misclassified values on the testing set. Print out your results as a table showing the values of k and the misclassification percentages. Then plot the misclassification rates on the testing set versus the k values. 
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+
+\begin{enumerate}[label=\alph*.]
+    \item The necessary packages and data were imported. 
+
+\begin{lstlisting}[language=Python]
+import matplotlib.pyplot as plt
+
+from sklearn import datasets
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+
+iris = datasets.load_iris()
+
+X = iris.data
+y = iris.target
+names = iris.target_names
+\end{lstlisting}
+
+The linear discriminant analysis function from the Sklearn package was used to implement the analysis.  
+
+\begin{lstlisting}[language=Python, firstnumber=12]
+lda = LDA(n_components=2)
+model = lda.fit(X, y).transform(X)
+
+plt.figure()
+for i, name in zip([0, 1, 2], names):
+    plt.scatter(model[y == i, 0], model[y == i, 1], label=name)
+plt.legend()
+plt.xlabel("LD1")
+plt.ylabel("LD2")
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=75mm]{Iris/LDA.png}
+\end{figure}
+
+\newpage
+\item The data was split to accommodate for a 20\% testing set. 
+
+\begin{lstlisting}[language=Python, firstnumber=14]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+k_range = range(1,51)
+
+scores = {}
+scores_list = []
+print("K Value | Accuracy Score")
+for k in k_range:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(X_train, y_train)
+    pred = knn.predict(X_test)
+    scores[k] = metrics.accuracy_score(y_test, pred)
+    scores_list.append(scores[k])
+    print("%i | %f"%(k, scores[k]))
+
+plt.figure()
+plt.plot(k_range, scores_list)
+plt.title("Misclassification Rate")
+plt.xlabel("KNN K Value")
+plt.ylabel("Accuracy")
+plt.show()
+
+\end{lstlisting}
+
+\begin{table}[h]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{l|ll|ll|ll|ll|l}
+        K Value & Accuracy Score & \multicolumn{8}{l}{}                                          \\
+       \hline \\
+    1  & 0.966667 & 11 & 0.966667 & 21 & 0.966667 & 31 & 0.966667 & 41 & 0.966667 \\
+    2  & 0.933333 & 12 & 0.966667 & 22 & 0.966667 & 32 & 0.966667 & 42 & 0.933333 \\
+    3  & 0.966667 & 13 & 0.966667 & 23 & 0.966667 & 33 & 0.966667 & 43 & 0.966667 \\
+    4  & 0.966667 & 14 & 0.966667 & 24 & 0.966667 & 34 & 0.966667 & 44 & 0.933333 \\
+    5  & 0.966667 & 15 & 0.966667 & 25 & 0.966667 & 35 & 0.966667 & 45 & 0.933333 \\
+    6  & 0.933333 & 16 & 0.966667 & 26 & 0.966667 & 36 & 0.966667 & 46 & 0.933333 \\
+    7  & 0.933333 & 17 & 0.966667 & 27 & 0.966667 & 37 & 0.966667 & 47 & 0.966667 \\
+    8  & 0.966667 & 18 & 0.966667 & 28 & 0.966667 & 38 & 0.933333 & 48 & 0.933333 \\
+    9  & 0.966667 & 19 & 0.966667 & 29 & 0.966667 & 39 & 0.966667 & 49 & 0.966667 \\
+    10 & 0.966667 & 20 & 0.966667 & 30 & 0.966667 & 40 & 0.933333 & 50 & 0.933333
+    \end{tabular}
+    }
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=75mm]{Iris/knn.png}
+\end{figure}
+
+\end{enumerate}
 \end{solution}
 
 \end{document}
