@@ -49,7 +49,6 @@ for train_index, test_index in crossvalidation.split(day_temp):
     ridge.fit(X_train, y_train)
     lasso.fit(X_train, y_train)
     bayesian.fit(X_train, y_train)
-    
 
 linear_pred = linear.predict(X_test)
 ridge_pred = ridge.predict(X_test)
@@ -60,11 +59,6 @@ mse_linear = mean_squared_error(y_test, linear_pred)
 mse_ridge = mean_squared_error(y_test, ridge_pred)
 mse_lasso = mean_squared_error(y_test, lasso_pred)
 mse_bayesian = mean_squared_error(y_test, bayesian_pred)
-
-print(mse_linear)
-print(mse_ridge)
-print(mse_lasso)
-print(mse_bayesian)
 
 plt.figure()
 plt.scatter(day_temp, cnt_day)
@@ -101,11 +95,3 @@ plt.xlabel("Temperature [deg C]")
 plt.ylabel("Rider Count")
 plt.savefig("images/bayesian.png")
 plt.clf()
-
-# plt.show()
-
-# plt.plot(X_test, ridge_pred, color="purple", label=mse_ridge)
-# plt.plot(X_test, lasso_pred, color="orange", label=mse_lasso)
-# plt.plot(X_test, bayesian_pred, color="green", label=mse_bayesian)
-
-

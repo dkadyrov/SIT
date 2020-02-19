@@ -117,7 +117,7 @@
     Since $I_{nm}\Sigma = \Sigma I_{nm} = \Sigma$: 
 
     \begin{equation*}
-        E[xx^T] = \mu\mu^T+I_{nm}\Sigma
+        E[xx^T] = \mu\mu^T+I_{nm}\Sigma \Leftarrow
     \end{equation*}
 \end{solution}
 \newpage
@@ -173,7 +173,7 @@
 
 The necessary packages and files are imported into the Python script: 
 
-\begin{lstlisting}[language=Python, firstnumber=10]
+\begin{lstlisting}[language=Python, firstnumber=1]
 import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, BayesianRidge
@@ -190,7 +190,7 @@ cnt_day = day["cnt"].values.reshape(-1, 1)
 
 The data is explored to examine it's features. Both hourly and daily rider data is examined. The graphs outputted for the daily and hourly ridership are shown on the next pages, respectively. 
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, firstnumber=15]
 for col in range(len(hour.columns)):
     if hour.columns[col] not in ["instant", "cnt", "dteday", "registered", "casual"]:
         plt.figure()
@@ -292,13 +292,13 @@ for col in range(len(day.columns)):
 \newpage
 Based on the feature graphs, temperature was reduced to the best feature to model. According to the \texttt{README} the temperature was normalized with a \SI{41}{\celsius} maximum so the temperature array is multiplied by 41 for human readability. 
 
-\begin{lstlisting}
+\begin{lstlisting}[language=Python, firstnumber=37]
 day_temp = day["temp"].values.reshape(-1, 1) * 41
 \end{lstlisting}
 
 KFold cross-validation was used with a 10-split. The regression models applied were linear, ridge, lasso, and bayesian through their respective \texttt{sklearn} packages. For each k-fold, the models are fitted using the separated training data. 
 
-\begin{lstlisting}
+\begin{lstlisting}[language=Python, firstnumber=39]
 crossvalidation = KFold(n_splits=10)
 linear = LinearRegression()
 ridge = Ridge()
@@ -315,7 +315,7 @@ for train_index, test_index in crossvalidation.split(day_temp):
 
 The test portion of the data was then used to test the prediction quality of the models. The mean square error was calculated between the test portion data and the values predicted by the models. 
 
-\begin{lstlisting}
+\begin{lstlisting}[language=Python, firstnumber=53]
 linear_pred = linear.predict(X_test)
 ridge_pred = ridge.predict(X_test)
 lasso_pred = lasso.predict(X_test)
@@ -362,7 +362,7 @@ The following a table showing the different mean squared error values of the mod
 \end{solution}
 
 \newpage
-\begin{problem}
+\begin{problem}[5]
     UCI Machine Learning: Iris Data Set 
     
     \begin{enumerate}[label=\alph*.]
@@ -411,7 +411,7 @@ plt.show()
 \end{figure}
 
 \newpage
-\item The data was split to accommodate for a 20\% testing set. 
+\item The data was split to accommodate for a 20\% testing set. For each iteration of K (from 1 to 50) a k-nearest neighbor classifier model is generated with the training data and then tested using the testing set. The accuracy score is calculated and stored. I encountered a problem where there was an inconsistent score given every time I ran the script. 
 
 \begin{lstlisting}[language=Python, firstnumber=14]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
