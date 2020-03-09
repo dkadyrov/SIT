@@ -549,3 +549,6 @@ dmypy.json
 ./CS-559/Resources/Textbooks/Deep_Learning_Ian_Goodfellow_Yoshua_Bengio_Aaron_Courville_MIT_Press_2016.pdf
 *./CS-546/Final Project/Presentation/Kadyrov_Daniel_FinalProject_Video.mov
 *./CS-559/Resources/Textbooks/Deep_Learning_Ian_Goodfellow_Yoshua_Bengio_Aaron_Courville_MIT_Press_2016.pdf
+
+*.RData
+*.RHistory
