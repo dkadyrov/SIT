@@ -2,7 +2,7 @@
 # First Name: Daniel
 # Last Name: Kadyrov
 # ID: 10455680
-# Puyrpose: Homework #3 KNN
+# Purpose: Homework #3 KNN
 
 rm(list=ls())
 
@@ -10,14 +10,15 @@ rm(list=ls())
 library(kknn)
 
 # Import Data
-data <- read.csv("breast-cancer-wisconsin.data.csv", header=TRUE)
+data <- read.csv("breast-cancer-wisconsin.data.csv", header=TRUE, na.strings="?")
+
+# Remove Missing Rows
+data <- na.omit(data)
 
 # Seperate Data into Training / Test
 index <- sort(sample(nrow(data), as.integer(0.70*nrow(data))))
 training <- data[index,]
 test <- data[-index,]
-
-index <- seq(1, nrow(data), by=5)
 
 # Perform KNN k=3
 predict_k3 <- kknn(formula=Class~., training[2:11], test[2:10], k=3, kernel ="rectangular")
