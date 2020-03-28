@@ -58,7 +58,6 @@ table(Class=Titanic_rows$Class,NBayes=category_class)
 table(NBayes=category_class,Survived=Titanic_rows$Survived)
 ?prop.table
 prop.table(table(Class=Titanic_rows$Class,Survived=Titanic_rows$Survived))
-
 ## Naive Bayes classification using two variables 
 nBayes_class_age <- naiveBayes(Survived ~Class+Age, data =Titanic_rows)
 category_class_age<-predict(nBayes_class_age,Titanic_rows  )
