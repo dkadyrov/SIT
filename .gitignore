@@ -552,3 +552,4 @@ dmypy.json
 
 *.RData
 *.RHistory
+mnist_train.csv
