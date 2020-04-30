@@ -19,9 +19,9 @@
 \addbibresource{bib.bib}
 
 \usepackage{hyperref}
-\usepackage{url} 
+\usepackage{url}
 
-\Title{Exploration of COVID19 Data}
+\Title{Exploration of COVID-19 Data}
 \DueDate{April 30, 2020}
 \ClassName{Machine Learning Fundamentals and Applications}
 \ClassNumber{CS559}
@@ -34,7 +34,7 @@
 \maketitle
 
 \begin{abstract}
-  Short introduction to subject of the paper \ldots
+  \noindent An analysis on predicting the spread, ending, growth rate and mitigation, weather correlations, of COVID-19 and case study of its effects on New York.
 \end{abstract}
 
 \newpage
@@ -61,7 +61,7 @@ All data used for this report was accessed on April 26th 2020.
 
 Data was imported into Python using the \texttt{Pandas} package available through \texttt{Pip}. Column names like \texttt{ObservationDate} and \texttt{Country/Region} were renamed to \texttt{Date} and \texttt{Country}, respectively. Country names listed, such as Mainland China, UK, US, were replaced to reflect their widely used names, China, United States, and United Kingdom, respectively. The serial number column, \texttt{SNo}, was dropped.
 
-\begin{lstlisting}[language=Python, caption={Importing COVID19 dataset}]
+\begin{lstlisting}[language=Python, caption={Importing COVID-19 dataset}, firstnumber=12]
 import pandas as pd
 
 df = pd.read_csv("../data/novel-corona-virus-2019-dataset/covid_19_data.csv", parse_dates=["Last Update"])
@@ -78,7 +78,7 @@ df = df.drop(columns="SNo")
 \newpage
 Continents were added to the data through the package \texttt{Pycountry}.
 
-\begin{lstlisting}[language=Python, caption={Adding continent data}]
+\begin{lstlisting}[language=Python, caption={Adding continent data}, firstnumber=29]
 import pycountry_convert as pc
 
 def get_continent(row):
@@ -102,19 +102,19 @@ def get_continent(row):
 df["Continent"] = df.apply(lambda row: get_continent(row), axis=1)
 \end{lstlisting}
 
-The number of cases of COVID19 that were eradicated can be found by adding the number of recovered patients with the number of deaths.
+The number of cases of COVID-19 that were eradicated can be found by adding the number of recovered patients with the number of deaths.
 
 \begin{equation}
   N_{\text{eradicated}} = N_{\text{deaths}} + N_{\text{recovered}}
 \end{equation}
 
-The number of active cases of COVID19 can be found by subtracting the number of eradicated cases from the number of confirmed cases.
+The number of active cases of COVID-19 can be found by subtracting the number of eradicated cases from the number of confirmed cases.
 
 \begin{equation}
   N_{\text{active}} = N_{\text{confirmed}} - N_{\text{eradicated}}
 \end{equation}
 
-\begin{lstlisting}[language=Python, caption={Computed eradicated and active cases}]
+\begin{lstlisting}[language=Python, caption={Computed eradicated and active cases}, firstnumber=25]
 df["Eradicated"] = df["Deaths"] + df["Recovered"]
 df["Active"] = df["Confirmed"] - df["Eradicated"]
 \end{lstlisting}
@@ -125,47 +125,46 @@ df["Active"] = df["Confirmed"] - df["Eradicated"]
 Table \ref{Continent Spread} shows the prolific spread of the virus throughout the inhabitant continents of the world.
 
 \begin{table}[h]
-  \caption{Spread of COVID19 by Continent}
+  \caption{Spread of COVID-19 by Continent}
   \label{Continent Spread}
   \centering
   \begin{tabular}{lrrrrrr}
     \toprule
     Continent     & Confirmed & Deaths & Recovered & Eradicated & Active \\
     \midrule
-    Europe        & 1251929   & 120150 & 407130    & 527280     & 724649 \\
-    North America & 1013138   & 58224  & 125756    & 183980     & 829158 \\
-    Asia          & 460182    & 16946  & 220668    & 237614     & 222568 \\
-    South America & 131250    & 47826  & 6019      & 53845      & 77405  \\
-    Africa        & 29683     & 9013   & 1341      & 10354      & 19329  \\
-    Oceania       & 8190      & 98     & 5375      & 5473       & 2717   \\
+    Europe        & 1,251,929   & 120,150 & 407,130    & 527,280     & 724,649 \\
+    North America & 1,013,138   & 58,224  & 125,756    & 183,980     & 829,158 \\
+    Asia          & 460,182    & 16,946  & 220,668    & 237,614     & 222,568 \\
+    South America & 131,250    & 47,826  & 6,019      & 53,845      & 77,405  \\
+    Africa        & 29,683     & 9,013   & 1,341      & 10,354      & 19,329  \\
+    Oceania       & 8,190      & 98     & 5,375      & 5,473       & 2,717   \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Visualizing the confirmed cases over time shows how fast this virus grew in months time.
+Visualizing the confirmed cases over time shows how fast this virus grew in a months time.
 
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.6]{continent}
   \caption{Spread of COVID 19 by Continent}
 \end{figure}
-% \subsection{Data Description and Preprocessing}
 
 \newpage
 
 Analyzing the top countries with confirmed cases by continent:
 
 \begin{table}[H]
-  \caption{Spread of COVID19 in Europe}
+  \caption{Spread of COVID-19 in Europe}
   \label{Europe Spread}
   \centering
   \begin{tabular}{lrrrrr}
     \toprule
     Country & Confirmed & Deaths & Recovered & Eradicated & Active \\
     \midrule
-    Italy   & 195351    & 26384  & 63120     & 89504      & 105847 \\
-    Spain   & 223759    & 22902  & 95708     & 118610     & 105149 \\
-    Germany & 156513    & 5877   & 109800    & 115677     & 40836  \\
+    Italy   & 195,351    & 26,384  & 63,120     & 89,504      & 105,847 \\
+    Spain   & 223,759    & 22,902  & 95,708     & 118,610     & 105,149 \\
+    Germany & 156,513    & 5,877   & 109,800    & 115,677     & 40,836  \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -173,16 +172,16 @@ Analyzing the top countries with confirmed cases by continent:
 \vspace{-1.5em}
 
 \begin{table}[H]
-  \caption{Spread of COVID19 in North America}
+  \caption{Spread of COVID-19 in North America}
   \label{North America Spread}
   \centering
   \begin{tabular}{lrrrrr}
     \toprule
     Country       & Confirmed & Deaths & Recovered & Eradicated & Active \\
     \midrule
-    United States & 938154    & 53755  & 100372    & 154127     & 784027 \\
-    Canada        & 45493     & 2549   & 16013     & 18562      & 26931  \\
-    Mexico        & 13842     & 1305   & 7149      & 8454       & 5388   \\
+    United States & 938,154    & 53,755  & 100,372    & 154,127     & 784,027 \\
+    Canada        & 45,493     & 2,549   & 16,013     & 18,562      & 26,931  \\
+    Mexico        & 13,842     & 1,305   & 7,149      & 8,454       & 5,388   \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -190,16 +189,16 @@ Analyzing the top countries with confirmed cases by continent:
 \vspace{-1.5em}
 
 \begin{table}[H]
-  \caption{Spread of COVID19 in Asia}
+  \caption{Spread of COVID-19 in Asia}
   \label{Asia Spread}
   \centering
   \begin{tabular}{lrrrrr}
     \toprule
     Country & Confirmed & Deaths & Recovered & Eradicated & Active \\
     \midrule
-    China   & 82827     & 4632   & 77394     & 82026      & 801    \\
-    Iran    & 89328     & 5650   & 68193     & 73843      & 15485  \\
-    Turkey  & 107773    & 2706   & 25582     & 28288      & 79485  \\
+    China   & 82,827     & 4,632   & 77,394     & 82,026      & 801    \\
+    Iran    & 89,328     & 5,650   & 68,193     & 73,843      & 15,485  \\
+    Turkey  & 107,773    & 2,706   & 25,582     & 28,288      & 79,485  \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -207,16 +206,16 @@ Analyzing the top countries with confirmed cases by continent:
 \vspace{-1.5em}
 
 \begin{table}[H]
-  \caption{Spread of COVID19 in Africa}
+  \caption{Spread of COVID-19 in Africa}
   \label{Africa Spread}
   \centering
   \begin{tabular}{lrrrrr}
     \toprule
     Country      & Confirmed & Deaths & Recovered & Eradicated & Active \\
     \midrule
-    South Africa & 4361      & 86     & 1473      & 1559       & 2802   \\
-    Egypt        & 4319      & 307    & 1114      & 1421       & 2898   \\
-    Algeria      & 3256      & 419    & 1479      & 1898       & 1358   \\
+    South Africa & 4,361      & 86     & 1,473      & 1,559       & 2,802   \\
+    Egypt        & 4,319      & 307    & 1,114      & 1,421       & 2,898   \\
+    Algeria      & 3,256      & 419    & 1,479      & 1,898       & 1,358   \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -224,15 +223,15 @@ Analyzing the top countries with confirmed cases by continent:
 \vspace{-1em}
 
 \begin{table}[H]
-  \caption{Spread of COVID19 in Oceania}
+  \caption{Spread of COVID-19 in Oceania}
   \label{Oceania Spread}
   \centering
   \begin{tabular}{lrrrrr}
     \toprule
     Country     & Confirmed & Deaths & Recovered & Eradicated & Active \\
     \midrule
-    Australia   & 6694      & 80     & 4223      & 4303       & 2391   \\
-    New Zealand & 1470      & 18     & 1142      & 1160       & 310    \\
+    Australia   & 6,694      & 80     & 4,223      & 4,303       & 2,391   \\
+    New Zealand & 1,470      & 18     & 1,142      & 1,160       & 310    \\
     Fiji        & 18        & 0      & 10        & 10         & 8      \\
     \bottomrule
   \end{tabular}
@@ -240,7 +239,7 @@ Analyzing the top countries with confirmed cases by continent:
 
 
 \newpage
-\section{Predicting COVID19 Spread through Interpolation}
+\section{Predicting COVID-19 Spread through Interpolation}
 
 \subsection{Methodology}
 
@@ -248,7 +247,7 @@ Analyzing the top countries with confirmed cases by continent:
 
 Since the data provided is time dependant and the task is to build models to predict the spread of the virus, the training data was set to be all data available until March 31st, 2020 and everything after was used as test data to score the model. This split was created in Python through the following \texttt{Dataframe} manipulation:
 
-\begin{lstlisting}[language=Python, caption={Training and Test Data Split}]
+\begin{lstlisting}[language=Python, caption={Training and Test Data Split}, firstnumber=153]
 x = data.loc[(data['Date'] < "04/01/2020")]["Days"]
 y = data.loc[(data['Date'] < "04/01/2020")]["Confirmed"]
 
@@ -266,7 +265,7 @@ An exponential model describes the growth of the virus as ever growing and unsto
 
 This was achieved in Python using the curve fit function of the Sklearn library.
 
-\begin{lstlisting}[language=Python, caption={Exponential Model}]
+\begin{lstlisting}[language=Python, caption={Exponential Model}, firstnumber=149]
 from scipy.optimize import curve_fit
 
 def exponential(x, a, b, c):
@@ -286,7 +285,7 @@ The quadratic model describes the growth of the virus as parabolic. The growth h
 
 Within Python:
 
-\begin{lstlisting}[language=Python, caption={Quadratic Model}]
+\begin{lstlisting}[language=Python, caption={Quadratic Model}, firstnumber=168]
 from scipy.optimize import curve_fit
   
 def quadratic(x, a, b, c):
@@ -311,7 +310,7 @@ where $L$ is the curve's maximum value, or scale, $k$ is the logistic growth rat
 
 The logistic function requires for the data to be normalized. A scalar value is generated by assuming the last available y-value, or confirmed case number, is the highest point.
 
-\begin{lstlisting}[language=Python, caption={Logistic Model}]
+\begin{lstlisting}[language=Python, caption={Logistic Model}, firstnumber=187]
 from scipy.optimize import curve_fit
     
 def logistic(x, L, k, x0):
@@ -325,8 +324,7 @@ y_pred = quadratic(x2, *params) * scale
 
 \subsubsection{Accuracy}
 
-The accuracy of the models was determined through coefficient of determination, usually denoated as $R^2$. The regression score function was provied by the Sklearn metrics package. A score of 1 denotes the best possible score.
-
+The accuracy of the models was determined through the coefficient of determination, usually denoted as $R^2$. The regression score function was provided by the \texttt{Sklearn} metrics package. A score of 1 denotes the best possible score.
 
 \begin{equation}
   R^2(y, \hat{y}) = 1-\frac{\sum_{i=1}^n(y_i - \hat{y_i})^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}
@@ -342,15 +340,15 @@ where
   \sum_{i=1}^n(y_i - \hat{y_i})^2 = \sum_{n=1}^n \epsilon_i^2
 \end{equation*}
 
-The accuracy score was calculated for only the predicted April data to analyze how well the models forsaw the growth of the virus in the selected country.
+The accuracy score was calculated for only the predicted April data to analyze how well the models foresaw the growth of the virus in the selected country.
 
 \newpage
 \subsection{Results}
 
-Table \ref{Task 1 Results} shows the accuracy results of the different regression models to predict the growth of the virus in the selected country. A score closer to the 1 indiciates that the model closer forsees how the virus spread in the month of April using the data provided in earlier months. When the exponential model predicts the growth better than the logistic model, it indiciates that the virus is spreading unmitigated. A better score in the logistic model suggests that the virus growth is tapering in the country.
+Table \ref{Task 1 Results} shows the accuracy results of the different regression models to predict the growth of the virus in the selected country. A score closer to the 1 indicates that the model closer foresees how the virus spread in the month of April using the data provided in earlier months. When the exponential model predicts the growth better than the logistic model, it indicates that the virus is spreading unmitigated. A better score in the logistic model suggests that the virus growth is tapering in the country.
 
 \begin{table}[H]
-  \caption{Accuracy of COVID19 Growth Models}
+  \caption{Accuracy of COVID-19 Growth Models}
   \label{Task 1 Results}
   \centering
   \begin{tabular}{lrrr}
@@ -413,12 +411,12 @@ Even though $R^2$ accuracy is poor for all models, it demonstrates the inability
     \caption{United States}
   \end{subfigure}
 
-  \caption{Modeling COVID19 Spread}
+  \caption{Modeling COVID-19 Spread}
   \label{fig:task1}
 \end{figure}
 
 \newpage
-\section{Predicting the End of COVID19}
+\section{Predicting the End of COVID-19}
 
 \subsection{Methodology}
 
@@ -436,7 +434,7 @@ Rearranging to solve for $x$, when the logistic function reaches the threshold v
 
 The threshold value, $t$, was selected to be 1.000001 since using 1 would result in $x$ becoming infinity. The function in Python uses the parameters found in the logistic function.
 
-\begin{lstlisting}[language=Python, caption={Predicting the Last Day}]
+\begin{lstlisting}[language=Python, caption={Predicting the Last Day}, firstnumber=74]
 import numpy as np
 
 def predict_day(params): 
@@ -455,7 +453,7 @@ All available data was used to create the logistic model and was generated for t
 Table \ref{Task 2 Results} shows the end date, total confirmed case, and total deaths predicted by the logistic model.
 
 \begin{table}[H]
-  \caption{COVID19 Country End Dates and Total Cases}
+  \caption{COVID-19 Country End Dates and Total Cases}
   \label{Task 2 Results}
   \centering
   \begin{tabular}{llrr}
@@ -488,7 +486,7 @@ Since the model only uses the data provided up to the date of the simulation, th
 Using this model on the total world data generates the following.
 
 \begin{table}[H]
-  \caption{COVID19 World End Date and Total Cases}
+  \caption{COVID-19 World End Date and Total Cases}
   \label{Task 2 Results World}
   \centering
   \begin{tabular}{lrr}
@@ -501,14 +499,14 @@ Using this model on the total world data generates the following.
 \end{table}
 
 \begin{table}[H]
-  \caption{COVID19 Continent End Date and Total Cases}
+  \caption{COVID-19 Continent End Date and Total Cases}
   \label{Task 2 Results Continent}
   \centering
   \begin{tabular}{llrr}
     \toprule
     Continent     & End Date   & Total Confirmed & Total Deaths \\
     \midrule
-    Africa        & 06/02/2020 & 19432           & 1,103        \\
+    Africa        & 06/02/2020 & 19,432           & 1,103        \\
     Asia          & 02/17/2022 & 31,881,299,685  & 55,866       \\
     Europe        & 06/18/2020 & 106,0795        & 102,298      \\
     North America & 06/08/2020 & 76,6258         & 36,842       \\
@@ -553,7 +551,7 @@ Using this model on the total world data generates the following.
     \caption{United States}
   \end{subfigure}
 
-  \caption{Predicting the COVID19 End Date}
+  \caption{Predicting the COVID-19 End Date}
   \label{fig:task2}
 \end{figure}
 
@@ -588,11 +586,11 @@ def growth_rate(data=None):
 df["Growth Rate"] = growth_rate(df["Confirmed"])
 \end{lstlisting}
 
-As COVID19 spread into the confines of various countries, the governments of the respective areas reacted in different ways to mitigate the growth rate of the virus. \\
+As COVID-19 spread into the confines of various countries, the governments of the respective areas reacted in different ways to mitigate the growth rate of the virus. \\
 
 Using Linear Regression through the Sklearn package, the slope of the growth rate can be found to compare as a metric between different countries. The regression model was created by setting the start point as the date when the growth rate was 1\% of the maximum growth rate and setting the end to be the date of the maximum growth rate.
 
-\begin{lstlisting}[language=Python, caption={Growth Rate Linear Regression}, firstnumber=76]
+\begin{lstlisting}[language=Python, caption={Growth Rate Linear Regression}, firstnumber=78]
 from sklearn.linear_model import LinearRegression
 
 y = data.loc[(data["Growth Rate"] > 0.01*data["Growth Rate"].max()) 
@@ -614,75 +612,78 @@ Another metric that was examined was the length of time that it took for the cou
 
 \subsubsection{Australia}
 
-Australia began its mitigation strategies by restricting flights coming in from Wuhan on January 23rd. After reporting its first coronavirus case on January 25th following with nine further cases by January 31st, Australia initiated a mandatory two week quarantine for all travelers from China. Starting March 29th, Prime Minister Scott Morrison limited public gatherings to two people and restricted movement to only essential travel. Testing was widely available and contact tracing measures were implemented to track the virus and ensure isolation measures \cite{perper_2020}.
+Australia began its mitigation strategies by restricting flights coming in from Wuhan on January 23rd. After reporting its first coronavirus case on January 25th following with nine further cases by January 31st, Australia initiated a mandatory two-week quarantine for all travelers from China. Starting March 29th, Prime Minister Scott Morrison limited public gatherings to two people and restricted movement to only essential travel. Testing was widely available and contact tracing measures were implemented to track the virus and ensure isolation measures \cite{perper_2020}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{task3/Australia.png}
-  \caption{COVID19 Growth Rate in Australia}
+  \caption{COVID-19 Growth Rate in Australia}
 \end{figure}
 
 \newpage
 \subsubsection{Brazil}
 
-Brazil reported its first official case of COVID19 on Feburary 25th. Even though the Brazialian Press Secretary tested positive for the virus on March 12th, Brazlian President Jair Bolsonaro continued to hold public parades for his supporters without wearing a mask. He has been heavily critized for minimizing the virus and not issueing quarantines spurring regional governments and even local gangs to step up social distancing measures. After the Ministor of Health, Luiz Mandetta questioned Bolsonaro's lack of measures, the President replaced him. Brazil is the current leader for COVID19 cases in South America \cite{thebrazilianreport}.
+Brazil reported its first official case of COVID-19 on February 25th. Even though the Brazilian Press Secretary tested positive for the virus on March 12th, Brazilian President Jair Bolsonaro continued to hold public parades for his supporters without wearing a mask. He has been heavily criticized for minimizing the virus and not issuing quarantines spurring regional governments and even local gangs to step up social distancing measures. After the Minister of Health, Luiz Mandetta questioned Bolsonaro's lack of measures, the President replaced him. Brazil is the current leader for COVID-19 cases in South America \cite{thebrazilianreport}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{task3/Brazil.png}
-  \caption{COVID19 Growth Rate in Brazil}
+  \caption{COVID-19 Growth Rate in Brazil}
 \end{figure}
 
 \newpage
 \subsubsection{China}
 
-Even though reports from China state that seven cases of COVID19 were documented in Wuhan on December 18th, 2019, Chinese scientists formally announced the new coronavirus on January 7th, 2020. On January 1th, China records its first death from COVID19 and by January 23rd, Wuhan is placed under quarantine followed by the rest of Hubei province. An estimated 60 million residents are placed under home lockdown. China's strategy was built around testing and isolation. While a person is tested they wait in the clinic for results. If the results are positive, they are treated in the facilities until they are free of the virus and individuals who were in contact with the person are asked to self-isolate for two weeks at home. As a result of effectively removing infectious individuals from the general population, China was the first country to lower their growth rate \cite{holly_secon_2020}.
+Even though reports from China state that seven cases of COVID-19 were documented in Wuhan on December 18th, 2019, Chinese scientists formally announced the new coronavirus on January 7th, 2020. On January 1th, China records its first death from COVID-19 and by January 23rd, Wuhan is placed under quarantine followed by the rest of Hubei province. An estimated 60 million residents are placed under home lockdown. China's strategy was built around testing and isolation. While a person is tested they wait in the clinic for results. If the results are positive, they are treated in the facilities until they are free of the virus and individuals who were in contact with the person are asked to self-isolate for two weeks at home. As a result of effectively removing infectious individuals from the general population, China was the first country to lower their growth rate \cite{holly_secon_2020}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{task3/China.png}
-  \caption{COVID19 Growth Rate in China}
+  \caption{COVID-19 Growth Rate in China}
 \end{figure}
 
 \newpage
 \subsubsection{South Africa}
 
-The first case of COVID19 in South Africa was confirmed on March 5th. On March 15th, President Cyril Ramaphosa decalared a national state of disaster and imposed travel restrictions. Starting March 18th, President Ramaphosa closed schools and announced a 21 day lockdown with deployment of the South African National Defence Force to support it. On April 9th, the lockdown was extended until the end of the month. The enforcement of the lockdown by the police and army personnel included excessive force including incidences of beatings. A byproduct of the lockdown was a lowering of crime and domestic violence associated with an alchohol banned included in the restrictions \cite{knoetze_2020}.
+The first case of COVID-19 in South Africa was confirmed on March 5th. On March 15th, President Cyril Ramaphosa declared a national state of disaster and imposed travel restrictions. Starting March 18th, President Ramaphosa closed schools and announced a 21-day lockdown with the deployment of the South African National Defence Force to support it. On April 9th, the lockdown was extended until the end of the month. The enforcement of the lockdown by the police and army personnel included excessive force including incidences of beatings. A byproduct of the lockdown was a lowering of crime and domestic violence associated with an alcohol banned included in the restrictions \cite{knoetze_2020}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{task3/SouthAfrica.png}
-  \caption{COVID19 Growth Rate in South Africa}
+  \caption{COVID-19 Growth Rate in South Africa}
 \end{figure}
 
 \newpage
 \subsubsection{Sweden}
 
-The first case of COVID19 in Sweden was confirmed on January 31st. Unlike most countries, especially in Europe, Sweden has not imposed any lockdown measures. Following their consitution, the Public Health Agency can only suggest measures to the government. Currently, the agency and government have only reccomended stay at home measures and social distancing but have kept schools open. The basis behind these measures are to develop a population immunity to the virus \cite{savage_2020}.
+The first case of COVID-19 in Sweden was confirmed on January 31st. Unlike most countries, especially in Europe, Sweden has not imposed any lockdown measures. Following their constitution, the Public Health Agency can only suggest measures to the government. Currently, the agency and government have only recommended stay at home measures and social distancing but have kept schools open. The basis behind these measures are to develop a population immunity to the virus \cite{savage_2020}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{task3/Sweden.png}
-  \caption{COVID19 Growth Rate in Sweden}
+  \caption{COVID-19 Growth Rate in Sweden}
 \end{figure}
 
 
 \newpage
 \subsubsection{United States}
 
-The first confirmed case of COVID19 was on January 20th in the state of Washington. A public health emergency was officially declared on January 31st by the Trump Administration following a ban on foreignors who recently traveled from China on Feburary 2nd. The United States government has faced backlash for not responding the pandemic quickly, especially with a lack of testing and providing necessary medical and protective equipment. Intially President Donald Trump minimized the virus, calling it a hoax. Most efforts on containment were intiated by states like New York and California, mostly starting by March 21st. As of April 27th, states like Georgia have began easing lockdown restrictions even as the cases of COVID19 are still climbing \cite{staff_2020}.
+The first confirmed case of COVID-19 was on January 20th in the state of Washington. A public health emergency was officially declared on January 31st by the Trump Administration following a ban on foreigners who recently traveled from China on February 2nd. The United States government has faced backlash for not responding the pandemic quickly, especially with a lack of testing and providing necessary medical and protective equipment. Initially President Donald Trump minimized the virus, calling it a hoax. Most efforts on containment were initiated by states like New York and California, mostly starting by March 21st. As of April 27th, states like Georgia have began easing lockdown restrictions even as the cases of COVID-19 are still climbing \cite{staff_2020}.
 
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{task3/US.png}
-  \caption{COVID19 Growth Rate in United States}
+  \caption{COVID-19 Growth Rate in United States}
 \end{figure}
 
 \newpage
 \subsection{Results and Conclusion}
+
+The following table summarizes the results of the growth rate analysis for the chosen countries. 
+
 \begin{table}[H]
-  \caption{COVID19 Growth Rates and Mitigation}
+  \caption{COVID-19 Growth Rates and Mitigation}
   \label{Task 3 Results}
   \centering
   \begin{tabular}{llrrr}
@@ -699,14 +700,16 @@ The first confirmed case of COVID19 was on January 20th in the state of Washingt
   \end{tabular}
 \end{table}
 
+It can be seen that countries which addressed the pandemic early, like Australia and South Africa, were able to successfully mitigate the growth rate. Countries with strong governments, like China, were able to control the population in order to suppress the growth of the virus. Countries with leaders that did not address the pandemic early or at all, such as Brazil and the United States, have high growth rate numbers and not a clear end date. Countries like Sweden, who purposely do not control the population, have reasonable high growth rate but the effects on the population are still to be determined. 
+
 \newpage
 \section{Effects of Weather Conditions}
 \subsection{Methodology}
 
-In the early days of the COVID19 spread, scientists and news establishments made assumptions that based on virus' flu like symptoms, it would subside into the spring and summer as hot temperatures arrived in the Northern hemisphere \cite{aubrey_2020}. The National Oceanic and Atmospheric Administration, NOAA, provides free and widely available data on current and historic weather conditions for the United States. This data can be used to analyze a correlation between the virus spread and the weather conditions of the most affected states in different climates.
+In the early days of the COVID-19 spread, scientists and news establishments made assumptions that based on virus' flu-like symptoms, it would subside into the spring and summer as hot temperatures arrived in the Northern hemisphere \cite{aubrey_2020}. The National Oceanic and Atmospheric Administration, NOAA, provides free and widely available data on current and historic weather conditions for the United States. This data can be used to analyze a correlation between the virus spread and the weather conditions of the most affected states in different climates.
 
 \begin{table}[H]
-  \caption{Spread of COVID19 in United States}
+  \caption{Spread of COVID-19 in United States}
   \label{Task 4 States}
   \centering
   \begin{tabular}{lrrrrr}
@@ -733,13 +736,13 @@ New York, California, Michigan, and Louisiana were chosen as the states to analy
 \subsection{Results}
 \subsubsection{New York}
 
-The closest correlation to COVID19 with weather data for New York is the average wind speed with about 30\%.
+The closest correlation to COVID-19 with weather data for New York is the average wind speed with about 30\%.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}{0.45\linewidth}
     \includegraphics[width=\linewidth]{task4/New York_cases.png}
-    \caption{COVID19 Cases}
+    \caption{COVID-19 Cases}
   \end{subfigure}
   \hfil
   \begin{subfigure}{0.45\linewidth}
@@ -757,12 +760,12 @@ The closest correlation to COVID19 with weather data for New York is the average
     \caption{New York City Wind Speed}
   \end{subfigure}
 
-  \caption{New York COVID19 spread and weather conditions}
+  \caption{New York COVID-19 spread and weather conditions}
   \label{fig:task4NY}
 \end{figure}
 
 \begin{table}[H]
-  \caption{Correlation between COVID19 spread and weather conditions in New York}
+  \caption{Correlation between COVID-19 spread and weather conditions in New York}
   \label{Task 4 New York}
   \centering
   \input{tables/task4_newyork.tex}
@@ -772,13 +775,13 @@ The closest correlation to COVID19 with weather data for New York is the average
 \newpage
 \subsubsection{California}
 
-The closest correlation to COVID19 with weather data for California is the daily lower temperature with about 35\%.
+The closest correlation to COVID-19 with weather data for California is the daily lower temperature with about 35\%.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}{0.45\linewidth}
     \includegraphics[width=\linewidth]{task4/California_cases.png}
-    \caption{California COVID19 Cases}
+    \caption{California COVID-19 Cases}
   \end{subfigure}
   \hfil
   \begin{subfigure}{0.45\linewidth}
@@ -796,12 +799,12 @@ The closest correlation to COVID19 with weather data for California is the daily
     \caption{Los Angeles Wind Speed}
   \end{subfigure}
 
-  \caption{California COVID19 spread and weather conditions}
+  \caption{California COVID-19 spread and weather conditions}
   \label{fig:task4CA}
 \end{figure}
 
 \begin{table}[H]
-  \caption{Correlation between COVID19 spread and weather conditions in California}
+  \caption{Correlation between COVID-19 spread and weather conditions in California}
   \label{Task 4 California}
   \centering
   \input{tables/task4_california.tex}
@@ -810,13 +813,13 @@ The closest correlation to COVID19 with weather data for California is the daily
 \newpage
 \subsubsection{Michigan}
 
-The closest correlation to COVID19 with weather data for Michigan are the daily high and low temperatures with approximately 40\% and 39\%, respectively.
+The closest correlation to COVID-19 with weather data for Michigan are the daily high and low temperatures with approximately 40\% and 39\%, respectively.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}{0.45\linewidth}
     \includegraphics[width=\linewidth]{task4/Michigan_cases.png}
-    \caption{Michigan COVID19 Cases}
+    \caption{Michigan COVID-19 Cases}
   \end{subfigure}
   \hfil
   \begin{subfigure}{0.45\linewidth}
@@ -834,12 +837,12 @@ The closest correlation to COVID19 with weather data for Michigan are the daily 
     \caption{Detroit Wind Speed}
   \end{subfigure}
 
-  \caption{Michigan COVID19 spread and weather conditions}
+  \caption{Michigan COVID-19 spread and weather conditions}
   \label{fig:task4CA}
 \end{figure}
 
 \begin{table}[H]
-  \caption{Correlation between COVID19 spread and weather conditions in Michigan}
+  \caption{Correlation between COVID-19 spread and weather conditions in Michigan}
   \label{Task 4 Michigan}
   \centering
   \input{tables/task4_michigan.tex}
@@ -848,13 +851,13 @@ The closest correlation to COVID19 with weather data for Michigan are the daily 
 \newpage
 \subsubsection{Louisiana}
 
-The closest correlation to COVID19 with weather data for Louisiana is the daily high and lower temperatures with approximately 35\% and 40\%, respectively.
+The closest correlation to COVID-19 with weather data for Louisiana is the daily high and lower temperatures with approximately 35\% and 40\%, respectively.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}{0.45\linewidth}
     \includegraphics[width=\linewidth]{task4/Louisiana_cases.png}
-    \caption{Louisiana COVID19 Cases}
+    \caption{Louisiana COVID-19 Cases}
   \end{subfigure}
   \hfil
   \begin{subfigure}{0.45\linewidth}
@@ -872,12 +875,12 @@ The closest correlation to COVID19 with weather data for Louisiana is the daily 
     \caption{New Orleans Wind Speed}
   \end{subfigure}
 
-  \caption{Louisiana COVID19 spread and weather conditions}
+  \caption{Louisiana COVID-19 spread and weather conditions}
   \label{fig:task4CA}
 \end{figure}
 
 \begin{table}[H]
-  \caption{Correlation between COVID19 spread and weather conditions in Louisiana}
+  \caption{Correlation between COVID-19 spread and weather conditions in Louisiana}
   \label{Task 4 Louisiana}
   \centering
   \input{tables/task4_louisiana.tex}
@@ -885,12 +888,12 @@ The closest correlation to COVID19 with weather data for Louisiana is the daily 
 
 \subsection{Analysis}
 
-Based on the studies of the 4 different states listed above, a correlation between temperature and COVID19 spread cannot be made. Even though there was an approximate 40\% correlation between temperature and confirmed cases, this can be attributed to the fact to seasonal change into the spring as the virus spread in these areas. This also goes against earlier thoughts that warmer temperatures would curb the virus as infact, based on the data, the virus is growing as the temperature is increasing.
+Based on the studies of the 4 different states listed above, a correlation between temperature and COVID-19 spread cannot be made. Even though there was an approximate 40\% correlation between temperature and confirmed cases, this can be attributed to the fact to seasonal change into the spring as the virus spread in these areas. This also goes against earlier thoughts that warmer temperatures would curb the virus as in-fact, based on the data, the virus is growing as the temperature is increasing.
 
 \newpage
 \section{Case Study on New York City}
 
-One of United States' most populous and high-density cities, New York City, is also the current leader for COVID19 cases and deaths. New York City has made a plethora of information about COVID19 and other city-related data available to the public. Using the tools developed in the former sections, an analysis has been performed to study the effects of the virus on New York. 
+One of United States' most populous and high-density cities, New York City, is also the current leader for COVID-19 cases and deaths. New York City has made a plethora of information about COVID-19 and other city-related data available to the public. Using the tools developed in the former sections, an analysis has been performed to study the effects of the virus on New York. 
 
 \subsection{Exploration of Data}
 
@@ -899,24 +902,24 @@ Using available New York City zipcode data, a map was generated visualizing the 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{task5/map.PNG}
-  \caption{COVID19 New York City Zipcode Map}
+  \caption{COVID-19 New York City Zipcode Map}
 \end{figure}
 
-Analyzing the timeline of confirmed, hospitalized, and death case in New York City.
+Analyzing the timeline of confirmed, hospitalized, and death cases in New York City.
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.45]{task5/task5_timeline.png}
-  \caption{COVID19 Spread New York City}
+  \caption{COVID-19 Spread New York City}
 \end{figure}
 
 \newpage
 \subsection{Correlations for Zipcode Based Data}
 
-Combining datasets on demographic data and train lines based on zipcode with the COVID19 dataset can provide insight into if any demographic or urban planning attributes correlated with the spread of COVID19 in that area. 
+Combining datasets on demographic data and train lines based on zipcode with the COVID-19 dataset can provide insight into if any demographic or urban planning attributes correlated with the spread of COVID-19 in that area. 
 
 \begin{table}[H]
-  \caption{COVID19 Correlation in New York City}
+  \caption{COVID-19 Correlation in New York City}
   \label{Task 5 Correlation}
   \centering
   \input{tables/task5_correlation.tex}
@@ -925,14 +928,14 @@ Combining datasets on demographic data and train lines based on zipcode with the
 Features such as population and amount of occupied housing units make sense for high correlation. It is interesting to note that the number of train lines in a zipcode and the median household income and home value do not show correlation with confirmed positive tests.
 
 \newpage
-\subsection{Predicting the End of COVID19}
+\subsection{Predicting the End of COVID-19}
 
 The end results for New York City were using the logarithmic model developed to predict the end results of the pandemic for countries of the world in earlier sections. 
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.45]{task5/modeling.png}
-  \caption{Modeling COVID19 Spread New York City}
+  \caption{Modeling COVID-19 Spread New York City}
 \end{figure}
 
 \begin{table}[H]
@@ -945,21 +948,19 @@ The end results for New York City were using the logarithmic model developed to 
 \newpage
 \subsection{Growth Rate Mitigation} 
 
-Calculating and visualizing the growth rate for New York shows that the city managed minimize it to zero. The first case of COVID19 was confirmed on March 1st. On March 7th, Governor Andrew Cuomo declared a state of emergency and by March 22nd announced a statewide stay in place order after several days of outcries from New York City Mayor Bill de Blasio to do so. Public schools were closed and so were non-essential businesses. Since then, New York City has been challenged with problems of high unemployment, lack of protective equipment and paramedics, testing capabilities, and overcrowding. Even with problems with social distancing for the New York City population, the city managed to lower its growth rate in almost a month. 
+Calculating and visualizing the growth rate for New York shows that the city managed minimize it to zero. The first case of COVID-19 was confirmed on March 1st. On March 7th, Governor Andrew Cuomo declared a state of emergency and by March 22nd announced a statewide stay in place order after several days of outcries from New York City Mayor Bill de Blasio to do so. Public schools were closed and so were non-essential businesses. Since then, New York City has been challenged with problems of high unemployment, lack of protective equipment and paramedics, testing capabilities, and overcrowding. Even with problems with social distancing for the New York City population, the city managed to lower its growth rate in almost a month. 
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.45]{task5/task5_growthrate.png}
-  \caption{Modeling COVID19 Spread New York City}
+  \caption{Modeling COVID-19 Spread New York City}
 \end{figure}
 
 
 \newpage
 \section{Conclusion}
 
-The Coronavirus disease 2019 has spread throughout the world quickly, effectively, and metaphorically as it demonstrated the connectivity and interdependence of all countries. \\
-
-The spread of COVID-19 was estimated using different regression models. While a logistic function proved to be the better, but optimistic, predictive model, some countries faced infection amounts closer to the worse-case exponential function. Using the logistic model, the end dates and cases could be predicted. Comparing different mitigation methods between countries showed that governments that were able to control the population early on were able to lower the growth rate quickly. Analyzing New York showed that demographic information could not provide deep insight into the growth of COVID19 in affected zipcodes but that even in a densely populated city, strong government control could mitigate and lower the virus cases. \\
+The Coronavirus disease 2019 has spread throughout the world quickly, effectively, and metaphorically as it demonstrated the connectivity and interdependence of all countries. The spread of COVID-19 was estimated using different regression models. While a logistic function proved to be the better, but optimistic, predictive model, some countries faced infection amounts closer to the worse-case exponential function. Using the logistic model, the end dates and cases could be predicted. Comparing different mitigation methods between countries showed that governments that were able to control the population early on were able to lower the growth rate quickly. Analyzing New York showed that demographic information could not provide deep insight into the growth of COVID-19 in affected zipcodes but that even in a densely populated city, strong government control could mitigate and lower the virus cases. \\
 
 \newpage
 \printbibliography[heading=bibintoc,title={References}]

@@ -30,7 +30,6 @@ nyc_dem["JURISDICTION NAME"] = nyc_dem["JURISDICTION NAME"].astype(str)
 # %%
 nyc = pd.merge(left=nyc_cor, right=nyc_dem, left_on="Zipcode", right_on="JURISDICTION NAME")
 nyc = nyc.drop(columns="JURISDICTION NAME")
-# nyc = pd.merge(left=nyc, right=zipcode, left_on="Zipcode", right_on="Zipcode")
 
 # %%
 nyc["Lines"] = None
@@ -44,14 +43,6 @@ for index, zipcode in nyc.iterrows():
 
 nyc["Num Lines"] = nyc["Lines"].apply(
     lambda x: len(x))
-    # try: 
-    #     # zipcode["Lines"] = 
-    #     print()
-    #     break
-    # except: 
-    #     pass
-    # break
-    # zipcode["Zipcode"]["Lines"] = subway_lines[zipcode["Zipcode"]]
 
 # %%
 zipcode_db = pd.read_csv("../data//export//zipcode_data.csv")
@@ -96,8 +87,7 @@ nyc_time["Deaths Sum"] = nyc_time["Deaths"].cumsum()
 nyc_time["Date"] = nyc_time["Date"].apply(
     lambda x: datetime.strftime(
         datetime.strptime(x, "%m/%d/%y"), "%m/%d/%Y"))
-# nyc_time["Date"] = [datetime.strftime(datetime.strptime(x, '%m/%d/%y')
-# '%#m/%#d/%y']) for x in nyc_time["Date"]
+
 
 #%%
 import plotly.graph_objects as go
@@ -128,18 +118,11 @@ fig.add_trace(
 )
 
 fig.update_layout(
-    # title="COVID19 Spread by Continent",
     title_x=0.5,
-    # xaxis_title="Date",
-    # xaxis= {
-    #     'tickformat': '%b',
-    #     # 'tickvals': pd.date_range('2020-1', '2020-4', freq='MS')
-    # },
+
     yaxis_title="Number of Cases",
     font={
         "family": "Courier New, monospace",
-        # size=18,
-        # color="#7f7f7f"
     },
     legend={
         "x": 0,
@@ -160,7 +143,7 @@ def predict(data):
         return last_day
 
     def predict(x, y): 
-        days = np.arange(0, len(x))#np.linspace(0, len(x)-1, len(x))
+        days = np.arange(0, len(x))
 
         y_pred, params = logistic_model(days, y, days)
 
@@ -170,7 +153,6 @@ def predict(data):
             future_days = np.linspace(0, last_day, last_day+1)
         else: 
             future_days = np.linspace(0, days[-1], days[-1]+1)
-        # print(future_days)
 
         future, params = logistic_model(days, y, future_days)
         d0 = datetime.strptime(x[0], '%m/%d/%Y')
@@ -178,8 +160,6 @@ def predict(data):
 
         return future_dates, future
 
-
-# confirmed = 
     days = np.arange(0, len(nyc_time["Date"]))#np.linspace(0, len(x)-1, len(x))
     cmodel, params = logistic_model(days, data.values, days)
     last_day = predict_day(params)
@@ -194,7 +174,6 @@ def predict(data):
 
 confirmed = predict(nyc_time["Confirmed Sum"])
 hospitalized = predict(nyc_time["Hospitalized Sum"])
-# hospitalized = predict(nyc_time["Date"].values, nyc_time["Hospitalized"].values)
 deaths = predict(nyc_time["Deaths Sum"])
 
 #%%
@@ -262,67 +241,13 @@ if hospitalized:
         )
     )
 
-# fig.add_trace(
-#     go.Scatter(
-#         x=confirmed[0],
-#         y=confirmed[1],
-#         name="Confirmed"
-#     )
-# )
-
-# fig.add_trace(
-#     go.Scatter(
-#         x=hospitalized[0],
-#         y=hospitalized[1],
-#         name="Hospitalized"
-#     )
-# )
-
-# fig.add_trace(
-#     go.Scatter(
-#         x=deaths[0],
-#         y=deaths[1],
-#         name="Deaths"
-#     )
-# )
-
-# fig.add_trace(
-#     go.Bar(
-#         x=nyc_time["Date"],
-#         y=nyc_time["Confirmed Sum"],
-#         name="Confirmed"
-#     )
-# )
-
-# fig.add_trace(
-#     go.Bar(
-#         x=nyc_time["Date"],
-#         y=nyc_time["Hospitalized Sum"],
-#         name="Hospitalized"
-#     )
-# )
-
-# fig.add_trace(
-#     go.Bar(
-#         x=nyc_time["Date"],
-#         y=nyc_time["Deaths Sum"],
-#         name="Deaths"
-#     )
-# )
 
 fig.update_layout(
-    # title="COVID19 Spread by Continent",
     title_x=0.5,
-    # xaxis_title="Date",
-    # xaxis= {
-    #     'tickformat': '%b',
-    #     # 'tickvals': pd.date_range('2020-1', '2020-4', freq='MS')
-    # },
+
     yaxis_title="Number of Cases",
     font={
         "family": "Courier New, monospace",
-        # size=18,
-        # color="#7f7f7f"
     },
     legend={
         "x": 0,
@@ -330,9 +255,6 @@ fig.update_layout(
     },
 )
 
-# graph(nyc_data, c, confirmed, deaths, recovered)
-# graph(data, c, confirmed, deaths, filename="{}_c_d".format(c))
-# graph(data, c, confirmed, filename="{}_c".format(c))
 fig.write_image("../images/task5/modeling.png")
 
 # %%
@@ -344,9 +266,6 @@ nyc_pred = {
 }
 
 results = pd.DataFrame(data = nyc_pred)
-
-# with open('../report/tables/task5_modeling.tex', 'w') as tf:
-#     tf.write(results.to_latex(index=False))
 
 # %%
 from task3 import growth_rate
@@ -363,35 +282,12 @@ fig.add_trace(
     )
 )
 
-# fig.add_trace(
-#     go.Bar(
-#         x=nyc_time["Date"],
-#         y=nyc_time["Hospitalized Sum"],
-#         name="Hospitalized"
-#     )
-# )
-
-# fig.add_trace(
-#     go.Bar(
-#         x=nyc_time["Date"],
-#         y=nyc_time["Deaths Sum"],
-#         name="Deaths"
-#     )
-# )
-
 fig.update_layout(
-    # title="COVID19 Spread by Continent",
     title_x=0.5,
-    # xaxis_title="Date",
-    # xaxis= {
-    #     'tickformat': '%b',
-    #     # 'tickvals': pd.date_range('2020-1', '2020-4', freq='MS')
-    # },
     yaxis_title="Growth Rate",
     font={
         "family": "Courier New, monospace",
-        # size=18,
-        # color="#7f7f7f"
+
     },
     legend={
         "x": 0,
@@ -400,4 +296,3 @@ fig.update_layout(
 )
 fig.write_image("../images/task5/task5_growthrate.png")
 
-# %%

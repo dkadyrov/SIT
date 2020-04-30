@@ -1,5 +1,3 @@
-# To add a new cell, type '# %%'
-# To add a new markdown cell, type '# %% [markdown]'
 # %%
 import plotly.io as pio
 import numpy as np
@@ -8,10 +6,8 @@ import plotly.graph_objects as go
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
-# from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.metrics import r2_score as scorer
 from scipy.optimize import curve_fit
-
 # %%
 import pandas as pd
 
@@ -28,7 +24,6 @@ df = df.drop(columns="SNo")
 
 df["Eradicated"] = df["Deaths"] + df["Recovered"]
 df["Active"] = df["Confirmed"] - df["Eradicated"]
-
 
 # %%
 import pycountry_convert as pc
@@ -61,7 +56,6 @@ with open('../report/tables/task1_world.tex', 'w') as tf:
     tf.write(
         continents.to_latex(index=False))
 
-
 def f0(x):
     return "%s"%x
 
@@ -69,7 +63,6 @@ def f1(x):
     return '%i'%x
 
 # %%
-
 fig = go.Figure()
 
 date = df.groupby("Date")["Confirmed"].sum().reset_index()["Date"].values
@@ -86,47 +79,18 @@ for c in continents["Continent"]:
     )
 
 fig.update_layout(
-    # title="COVID19 Spread by Continent",
-    title_x=0.5,
-    # xaxis_title="Date",
-    # xaxis= {
-    #     'tickformat': '%b',
-    #     # 'tickvals': pd.date_range('2020-1', '2020-4', freq='MS')
-    # },
     yaxis_title="Number of Confirmed Cases",
     font={
         "family": "Courier New, monospace",
-        # size=18,
-        # color="#7f7f7f"
     },
     legend={
         "x": 0,
         "y": 1
     },
-    # shapes=[
-    #     # 1st highlight during Feb 4 - Feb 6
-    #     dict(
-    #         type="rect",
-    #         # x-reference is assigned to the x-values
-    #         xref="x",
-    #         # y-reference is assigned to the plot paper [0,1]
-    #         yref="paper",
-    #         x0="04/01/2020",
-    #         y0=0,
-    #         x1=max(date),
-    #         y1=1,
-    #         fillcolor="LightSalmon",
-    #         opacity=0.5,
-    #         layer="below",
-    #         line_width=0,
-    #     )
-    # ],
 )
 fig.write_image("../images/continent.png")
 
 # %%
-
-
 def polynomial_model(data):
     x = data.loc[(data['Date'] < "04/01/2020")]["Days"].values.reshape(-1, 1)
     y = data.loc[(data['Date'] < "04/01/2020")
@@ -182,27 +146,6 @@ def polynomial_model(data):
 
     return data, score, min_deg
 
-
-def quadratic_model(data):
-    def quadratic(x, a, b, c):
-        return a*(x**2.0) + b*x + c
-
-    x = data.loc[(data['Date'] < "04/01/2020")]["Days"].values
-    y = data.loc[(data['Date'] < "04/01/2020")]["Confirmed"].values
-
-    x2 = data.loc[(data['Date'] >= "04/01/2020")]["Days"]
-    y2 = data.loc[(data['Date'] >= "04/01/2020")]["Confirmed"].values
-    params, corr = curve_fit(quadratic, x, y, p0=[1, 1, 1])
-
-    y_test_pred = quadratic(x2, *params)
-
-    data["Quadratic"] = quadratic(
-        data['Days'].values, *params)
-    score = scorer(y2, y_test_pred)
-
-    return data, score
-
-
 def exponential_model(data):
     def exponential(x, a, b, c):
         return a*np.exp(b*(x-c))
@@ -222,6 +165,24 @@ def exponential_model(data):
 
     return data, score
 
+def quadratic_model(data):
+    def quadratic(x, a, b, c):
+        return a*(x**2.0) + b*x + c
+
+    x = data.loc[(data['Date'] < "04/01/2020")]["Days"].values
+    y = data.loc[(data['Date'] < "04/01/2020")]["Confirmed"].values
+
+    x2 = data.loc[(data['Date'] >= "04/01/2020")]["Days"]
+    y2 = data.loc[(data['Date'] >= "04/01/2020")]["Confirmed"].values
+    params, corr = curve_fit(quadratic, x, y, p0=[1, 1, 1])
+
+    y_test_pred = quadratic(x2, *params)
+
+    data["Quadratic"] = quadratic(
+        data['Days'].values, *params)
+    score = scorer(y2, y_test_pred)
+
+    return data, score
 
 def logistic_model(data):
     def logistic(x, L, k, x0):
@@ -252,7 +213,6 @@ def logistic_model(data):
 
     return data, score, last_day
 
-
 def graph(data, name):
     fig = go.Figure()
 
@@ -280,14 +240,6 @@ def graph(data, name):
         )
     )
 
-    # fig.add_trace(
-    #     go.Scatter(
-    #         x=data['Date'],
-    #         y=data['Polynomial'],
-    #         name="Polynomial ({} deg)".format(deg),
-    #     )
-    # )
-
     fig.add_trace(
         go.Scatter(
             x=data['Date'],
@@ -297,34 +249,23 @@ def graph(data, name):
     )
 
     fig.update_layout(
-        # title="Modeling COVID19 Spread in {}".format(name),
         title_x=0.5,
-        # xaxis_title="Date",
         yaxis={
             "range": [0, max(data["Confirmed"])+.25*max(data["Confirmed"])]
         },
-        # xaxis= {
-        #     'tickformat': '%b',
-        #     # 'tickvals': pd.date_range('2020-1', '2020-4', freq='MS')
-        # },
         yaxis_title="Number of Confirmed Cases",
         yaxis_rangemode = "nonnegative",
         font={
             "family": "Courier New, monospace",
-            # size=18,
-            # color="#7f7f7f"
         },
         legend={
             "x": 0,
             "y": 1
         },
         shapes=[
-            # 1st highlight during Feb 4 - Feb 6
             dict(
                 type="rect",
-                # x-reference is assigned to the x-values
                 xref="x",
-                # y-reference is assigned to the plot paper [0,1]
                 yref="paper",
                 x0="04/01/2020",
                 y0=0,
@@ -340,47 +281,6 @@ def graph(data, name):
     fig.write_image("../images/task1/{}.png".format(name), scale=2)
 
 # %%
-# eu = df[df["Continent"] == "European Union"].groupby("Country").sum().sort_values(
-#     by=['Confirmed'], ascending=False).reset_index().head()
-
-# df[df["Continent"] == "Asia"].groupby("Country").sum().sort_values(
-#     by=['Confirmed'], ascending=False).reset_index().head()
-
-
-# df[df["Continent"] == "North America"].groupby("Country").sum().sort_values(
-#     by=['Confirmed'], ascending=False).reset_index().head()
-
-
-# df[df["Continent"] == "South America"].groupby("Country").sum().sort_values(
-#     by=['Confirmed'], ascending=False).reset_index().head()
-
-
-# df[df["Continent"] == "Africa"].groupby("Country").sum().sort_values(
-#     by=['Confirmed'], ascending=False).reset_index().head()
-
-
-# df[df["Continent"] == "Australia"].groupby("Country").sum().sort_values(
-#     by=['Confirmed'], ascending=False).reset_index().head()
-
-# %%
-# country_data = pd.DataFrame(columns=["Country","Exponential", "Quadratic","Polynomial"])
-# for c in eu["Country"]:
-#     country = df[df['Country'] == c].groupby(
-#         "Date")[["Date", "Confirmed"]].sum().reset_index()
-#     country["Days"] = country.index
-#     country = country.loc[(country['Confirmed'] > 0.01*country['Confirmed'].max())]
-#     country, score1 = exponential_model(country)
-#     country, score2 = quadratic_model(country)
-#     country, score3 = polynomial_model(country)
-#     graph(country, c)
-#     country_data = country_data.append({
-#         "Country": c,
-#         "Exponential": score1,
-#         "Quadratic": score2,
-#         "Polynomial": score3
-#     }, ignore_index=True)
-
-# %%
 country_data = pd.DataFrame(
     columns=["Country", "Exponential", "Quadratic", "Logistic"])
 for co in continents["Continent"]:
@@ -390,17 +290,14 @@ for co in continents["Continent"]:
         country = df[df['Country'] == c].groupby(
             "Date")[["Date", "Confirmed"]].sum().reset_index()
         country["Days"] = country.index
-        # country = country.loc[(country['Confirmed'] > 0.01*country['Confirmed'].max())]
         country, score1 = exponential_model(country)
         country, score2 = quadratic_model(country)
-        # country, score3, deg = polynomial_model(country)
         country, score4, last_day = logistic_model(country)
         graph(country, c)
         country_data = country_data.append({
             "Country": c,
             "Exponential": score1,
             "Quadratic": score2,
-            # "Polynomial": score3,
             "Logistic": score4
         }, ignore_index=True)
     with open('../report/tables/{}.tex'.format(co), 'w') as tf:
@@ -419,17 +316,14 @@ for co in continents["Continent"]:
         "Date")[["Date", "Confirmed"]].sum().reset_index()
 
     continent["Days"] = continent.index
-    # continent = continent.loc[(continent['Confirmed'] > 0.01*continent['Confirmed'].max())]
     continent, score1 = exponential_model(continent)
     continent, score2 = quadratic_model(continent)
-    # continent, score3, deg = polynomial_model(continent)
     continent, score4, last_day = logistic_model(continent)
     graph(continent, co)
     continent_data = continent_data.append({
         "Continent": co,
         "Exponential": score1,
         "Quadratic": score2,
-        # "Polynomial": score3,
         "Logistic": score4
     }, ignore_index=True)
 
@@ -441,34 +335,16 @@ with open('../report/tables/task1_continent_results.tex', 'w') as tf:
 world_data = pd.DataFrame(columns=["Exponential", "Quadratic", "Polynomial"])
 world = df.groupby("Date")[["Date", "Confirmed"]].sum().reset_index()
 world["Days"] = world.index
-# world = world.loc[(world['Confirmed'] > 0.01*world['Confirmed'].max())]
 world, score1 = exponential_model(world)
 world, score2 = quadratic_model(world)
-# world, score3, deg = polynomial_model(world)
 world, score4, last_day = logistic_model(world)
 graph(world, "the World")
 world_data = world_data.append({
     "Exponential": score1,
     "Quadratic": score2,
-    # "Polynomial": score3,
     "Logistic": score4
 }, ignore_index=True)
 
 with open('../report/tables/task1_world_results.tex', 'w') as tf:
     tf.write(
         world_data.to_latex(index=False))
-
-
- # %%
-# name = "South Korea"
-
-# country = df[df['Country'] == name].groupby(
-#     "Date")[["Date", "Confirmed"]].sum().reset_index()
-# country["Days"] = country.index
-# country = country.loc[(country['Confirmed'] > 0.01*country['Confirmed'].max())]
-
-# country, score1 = polynomial_model(country)
-# country, score2 = exponential_model(country)
-# country, score3 = quadratic_model(country)
-# graph(country, name)
-# %%

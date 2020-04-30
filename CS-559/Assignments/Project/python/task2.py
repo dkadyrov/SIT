@@ -97,34 +97,6 @@ def predict(x, y):
 
     return future_dates, future
 # %%
-
-
-
-# model = pd.DataFrame(columns=["Date", "Confirmed", "Recovered", "Deaths"])
-
-# country = df[df['Country'] == name].groupby(
-#             "Date")[["Date", "Confirmed", "Deaths", "Recovered" ]].sum().reset_index()
-
-
-
-
-# %%
-# name = "Fiji"
-# data = df[df['Country'] == name].groupby(
-#             "Date")[["Date", "Confirmed", "Deaths", "Recovered"]].sum().reset_index()
-# # country["Days"] = country.index
-
-# # name = "Africa"
-# # data = df[df['Continent'] == name].groupby(
-# #             "Date")[["Date", "Confirmed", "Deaths", "Recovered"]].sum().reset_index()
-
-# confirmed = predict(data["Date"].values, data["Confirmed"].values)
-# # recovered = predict(data["Date"].values, data["Recovered"].values)
-# deaths = predict(data["Date"].values, data["Deaths"].values)
-
-# graph(data, name, confirmed, show=True)
-# %%
-# data = country
 def graph(data, name, confirmed, deaths=None, recovered=None, filename=None, show=None):
     fig = go.Figure()
 
@@ -189,23 +161,10 @@ def graph(data, name, confirmed, deaths=None, recovered=None, filename=None, sho
         )
 
     fig.update_layout(
-        # title="Modeling COVID19 Termination in {}".format(name),
         title_x = 0.5,
-        # xaxis_title="Date",
-        # xaxis= {
-        #     'tickformat': '%b',
-        #     # 'tickvals': pd.date_range('2020-1', '2020-4', freq='MS')
-        # },
-        # xaxis = {
-        #     # 'type':'category'
-        #     'tickvals': confirmed[0],
-        #     'ticktext': confirmed[0]
-        # },
         yaxis_title="Number of Cases",
         font={
             "family":"Courier New, monospace",
-            # size=18,
-            # color="#7f7f7f"
         },
         legend={
             "x": 0,
@@ -224,14 +183,8 @@ def graph(data, name, confirmed, deaths=None, recovered=None, filename=None, sho
             fig.write_image("../images/task2/{}.png".format(name), scale=2)
 
  # %%
-
-
-# %% 
-
 continent_data = pd.DataFrame(columns=["Continent", "End Date", "Total Confirmed", "Total Deaths"])
 country_data = pd.DataFrame(columns=["Country", "End Date", "Total Confirmed", "Total Deaths"])
-
-# for country in continents["Continent"][]
 
 for co in df.groupby("Continent").sum().sort_values(
     by=['Confirmed'], ascending=False).reset_index()["Continent"]:
@@ -288,9 +241,6 @@ with open('../report/tables/task2_country_results.tex', 'w') as tf:
         country_data.sort_values("Country").to_latex(index=False, formatters=[f0, f0, f1, f1]))
 
 # %% 
-# pd.options.display.float_format = '{:.2f}'.format
-
-
 world_data = pd.DataFrame(columns= ["End Date", "Total Confirmed", "Total Deaths"])
 data = df.groupby("Date")[["Date", "Confirmed", "Recovered", "Deaths"]].sum().reset_index()
 confirmed = predict(data["Date"].values, data["Confirmed"].values)
@@ -308,39 +258,3 @@ with open('../report/tables/task2_world_results.tex', 'w') as tf:
     tf.write(
         world_data.to_latex(index=False, formatters=[f0, f1, f1]))
 
-
-# with open('../report/tables/task2_country_results.tex', 'w') as tf:
-#     tf.write(
-#         world_data.sort_values("Country").to_latex(index=False))
-
-# with open('../report/tables/task2_world.tex', 'w') as tf:
-#     tf.write(
-#         country_data.to_latex(index=False))
-#     for c in df[df["Continent"] == co].groupby("Country").sum().sort_values(
-#     by=['Confirmed'], ascending=False).reset_index().head(3)["Country"]:
-#         print(c)
-#         country = df[df['Country'] == c].groupby(
-#             "Date")[["Date", "Confirmed"]].sum().reset_index()
-#         country["Days"] = country.index
-#         # country = country.loc[(country['Confirmed'] > 0.01*country['Confirmed'].max())]
-#         country, score1 = exponential_model(country)
-#         country, score2 = quadratic_model(country)
-#         # country, score3, deg = polynomial_model(country)
-#         country, score4, last_day = logistic_model(country)
-#         graph(country, c)
-#         country_data = country_data.append({
-#             "Country": c,
-#             "Exponential": score1,
-#             "Quadratic": score2,
-#             # "Polynomial": score3,
-#             "Logistic": score4
-#         }, ignore_index=True)
-#     with open('../report/tables/{}.tex'.format(co), 'w') as tf:
-#         tf.write(df[df["Continent"] == co].groupby("Country").sum().sort_values(
-#     by=['Confirmed'], ascending=False).reset_index().head().to_latex())
-
-# with open('../report/tables/task1_country_results.tex', 'w') as tf:
-#     tf.write(
-#         country_data.sort_values("Country").to_latex(index=False))
-
-# %%

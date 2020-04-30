@@ -76,10 +76,6 @@ name = "Australia"
 data = df[df['Country'] == name].groupby("Date")[["Date", "Confirmed", "Deaths", "Recovered", "Active", "Growth Rate"]].sum().reset_index()
 
 y = data[data["Date"].between("03/20/2020", "03/24/2020")]["Growth Rate"]
-# y = data.loc[(data["Growth Rate"] > 0.01*data["Growth Rate"].max()) & (data["Growth Rate"] < data["Growth Rate"].max()) & (data["Growth Rate"].index < data["Growth Rate"].idxmax())]["Growth Rate"]
-# y = data.loc[(data["Growth Rate"] > 0.01*data["Growth Rate"].max())]["Growth Rate"]
-# y = data["Growth Rate"]
-# y = data.loc[(data["Confirmed"] > 0.01*data["Confirmed"].max()) & (data["Confirmed"] < data["Confirmed"].max()) & (data["Confirmed"].index < data["Confirmed"].idxmax())]["Growth Rate"]
 
 x = y.index
 
@@ -92,40 +88,24 @@ fig = go.Figure()
 fig.add_trace(
     go.Scatter(
         x = data["Date"],
-        y = data["Growth Rate"], #/ np.linalg.norm(data["Growth Rate"])
+        y = data["Growth Rate"],
         name="Growth Rate"
     )
 )
 fig.add_trace(
     go.Scatter(
         x = data["Date"][x],
-        y = y2, #/np.linalg.norm(data["Confirmed"])
+        y = y2, 
         name="Model"
     )
 )
 
 fig.update_layout(
-    # title="COVID19 Growth Rate in {}".format(name),
     title_x = 0.5,
-    # xaxis_title="Date",
-    # xaxis= {
-    #     'tickformat': '%b',
-    #     # 'tickvals': pd.date_range('2020-1', '2020-4', freq='MS')
-    # },
-    # xaxis = {
-    #     # 'type':'category'
-    #     'tickvals': confirmed[0],
-    #     'ticktext': confirmed[0]
-    # },
     yaxis_title="Growth Rate (%)",
-    # yaxis = {
-    #     'rangemode': "tozero",
-    # },
     yaxis_rangemode = "nonnegative",
     font={
         "family":"Courier New, monospace",
-        # size=18,
-        # color="#7f7f7f"
     },
     legend={
         "x": 0,
@@ -138,7 +118,4 @@ fig.write_image("../images/task3/Australia.png", scale=2)
 # %%
 slope = regressor.coef_
 startdate = data.loc[(data["Growth Rate"] > 0.01*data["Growth Rate"].max())]["Date"].values[0]
-# enddate = data.loc[(data["Growth Rate"].index > data["Growth Rate"].idxmax()) & (data["Growth Rate"] < 0.01*data["Growth Rate"].max())]["Date"].values[0]
 
-
-# %%
