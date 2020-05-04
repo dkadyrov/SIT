@@ -1,4 +1,8 @@
-# 
+# Course: CS 513B 
+# First Name: Daniel
+# Last Name: Kadyrov
+# ID: 10455680
+# Purpose: Homework #3 KNN
 
 library(neuralnet)
 
@@ -51,7 +55,12 @@ formula <- sprintf("%s%s", "diagnosis ~ ", paste("F", 2:31, collapse = " + ", se
 
 set.seed(7)
 
-data.first.net <- neuralnet(formula, data = train.data,
+data.net <- neuralnet(formula, data = train.data,
                             hidden = c(5), # 1 hidden layer with 5 nodes
                             linear.output = F, rep = 5,
                             err.fct = "ce", act.fct = "logistic", threshold = 2)
+
+train.score <- sapply(list(data.net),
+                      function(x) {min(x$result.matrix[c("error"), ])})
+                                    
+                                    
