@@ -1,0 +1,76 @@
+\documentclass{homework}
+
+% Palatino for rm and math | Helvetica for ss | Courier for tt
+% \usepackage{mathpazo} % math & rm
+% \linespread{1.05}        % Palatino needs more leading (space between lines)
+\usepackage[scaled]{helvet} % ss
+\usepackage{courier} % tt
+\normalfont
+% \usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+% \graphicspath{ {../images/} }
+\usepackage{float}
+\usepackage{subcaption}
+
+% \usepackage[nottoc]{tocbibind}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+\Title{Assignment 4}
+\DueDate{May 8, 2020}
+\ClassName{Machine Learning Fundamentals and Applications}
+\ClassNumber{CS559}
+\ClassSection{Spring 2020}
+\Instructor{Professor In Suk Jang}
+\Author{Daniel Kadyrov}
+\AuthorID{10455680}
+
+\begin{document}
+
+\maketitle
+
+
+% \newpage
+% \setcounter{page}{1}
+\section{Part 1}
+
+Provided in \texttt{kadyrov\_daniel\_assignment4.py} attached.
+
+\section{Part 2}
+
+\subsection{Logistic Regression}
+
+Classification through logistic regression uses the sigmoid function to predict the probability a given data entry belongs to a category. Although it is easy and effective especially when feature scaling and hyperparameter tuning is not needed, it performs poorly (as seen in this example) on non-linear data, like for image classification. 
+
+\subsection{Support Vector Machine}
+
+The Support Vector Machine algorithm uses a hyperplane in a dimensional space to separate the data where the number of dimensions is based on the number of features. SVM performs well when there are a lot of easily separable features. SVM, however, is slow and does not perform well when the classes have overlaps. SVM performed second best when compared to the other algorithms.
+
+\subsection{Decision Tree}
+
+Decision Tree classification uses a treechart like algorithm where internal nodes test an attribute and create branches based on the outcome of the tests. Each node representing a label. Although Decision Trees does not require scaling or normalization and has automatic feature selection, the algorithm can be easily overfit and requires a long time to train. 
+
+\subsection{Random Forest}
+
+Random Forest expands the decision tree algorithm by building multiple decision trees and chooses the most voted prediction as the result. It avoids overfitting and reduces the errors commonly found in decision trees and can handle large amounts of data. The data for Random Forest needs to have predictive features to work effectively. Random Forest performed the best out of all the algorithms used.
+
+\subsection{Comparison}
+
+\begin{table}[h]
+    \caption{Comparison of Classification Model Accuracy}
+    \label{Comparison}
+    \centering
+    \input{accuracy_part3.tex}
+\end{table}
+
+\section{Part 3}
+
+Provided in \texttt{kadyrov\_daniel\_assignment4\_part3.py} attached.
+
+\section{Part 4}
+
+I faced issues importing my own handwriting in the same format as MNIST. There are no resources provided on Campus, in the materials required by the course, or online that I could find to make my images work. I will continue looking but to ensure the submission is on time, I had to stop. 
+
+\end{document}

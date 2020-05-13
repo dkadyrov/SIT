@@ -2,7 +2,7 @@
 # First Name: Daniel
 # Last Name: Kadyrov
 # ID: 10455680
-# Purpose: Homework #3 KNN
+# Purpose: Homework #7 ANN
 
 library(neuralnet)
 

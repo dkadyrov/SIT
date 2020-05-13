@@ -1,0 +1,8 @@
+from skimage import io, img_as_float
+import numpy as np
+
+image = io.imread('68.png')
+>>> image = img_as_float(image)
+>>> io.imsave('outs.jpg', image)
+
+

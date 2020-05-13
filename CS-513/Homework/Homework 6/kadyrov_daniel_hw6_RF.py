@@ -39,5 +39,3 @@ rf.score(X_test, y_test)
 # Identify Important Features
 feature_imp = pd.Series(rf.feature_importances_,index=x.columns).sort_values(ascending=False)
 print(feature_imp)
-
-# %%

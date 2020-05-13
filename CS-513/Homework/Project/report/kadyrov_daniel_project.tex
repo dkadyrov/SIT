@@ -1,0 +1,147 @@
+\documentclass{homework}
+
+% Palatino for rm and math | Helvetica for ss | Courier for tt
+% \usepackage{mathpazo} % math & rm
+% \linespread{1.05}        % Palatino needs more leading (space between lines)
+\usepackage[scaled]{helvet} % ss
+\usepackage{courier} % tt
+\normalfont
+% \usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\graphicspath{ {../images/} }
+\usepackage{float}
+\usepackage{subcaption}
+
+% \usepackage[nottoc]{tocbibind}
+
+\usepackage{biblatex}
+\addbibresource{bib.bib}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+\Title{Exploration and Modeling of Attrition Data}
+\DueDate{May 8, 2020}
+\ClassName{Knowledge Discovery \& Data Mining}
+\ClassNumber{CS513B}
+\ClassSection{Spring 2020}
+\Instructor{Professor Khasha Dehnad}
+\Author{Daniel Kadyrov}
+\AuthorID{10455680}
+
+\begin{document}
+
+\maketitle
+
+
+% \newpage
+% \setcounter{page}{1}
+\section{Introduction}
+
+An attrition dataset was used to predict if an employee is active or terminated based features like age, sex, and education levels. Modeling was performed using a Random Forest classifier and a Support Vector Machine.  
+
+\section{Data Preprocessing}
+
+Initial data features columns including annual and hourly rates, ethnicity, age, sex, job group, first job, and education level. Columns like employee id, termination year, job code, and referral source were removed because they had missing data or unnecessary data for the classification. Status, whether the individual is active or terminated, was selected as the target column and factorized. 
+
+\begin{table}[h]
+    \caption{Data before Processing}
+    \label{Unprocessed Data}
+    \centering
+    % \resizebox{\columnwidth}{!}{
+    \input{data.tex}
+    % }
+\end{table}
+
+\subsection{Factorization}
+
+Features with a wide range or categorical data needed to be factorized. Annual rate was split based on \$20,000, \$50,000, \$75,000, \$100,000, and \$2,000,000. Hourly rate was split based on \$25, \$50, \$75, \$100, and \$1000. Age was split based on 20, 30, 40, 50, 60, 100. Hire month was split into quarters of a year, Q1, Q2, Q3, and Q4. Ethnicity, sex, marital status, number of teams, first job, travel requirements, disabled, veteran, job group, and education were factorized.
+
+\begin{table}[h]
+    \caption{Data after Processing}
+    \label{Unprocessed Data}
+    \centering
+    % \resizebox{\columnwidth}{!}{
+    \input{features.tex}
+    % }
+\end{table}
+
+\newpage
+\subsection{Exploration of Data}
+
+There were 21 total number of features with 9612 rows of data. Examining the correlations between the different features with their affect on the status of the employee.  
+
+\begin{table}[h]
+    \caption{Feature Correlation}
+    \label{Unprocessed Data}
+    \centering
+    % \resizebox{\columnwidth}{!}{
+    \input{correlation.tex}
+    % }
+\end{table}
+
+\section{Modeling}
+
+\subsection{Feature Selection}
+
+Feature selection was performed using Recursive Feature Elimination with a logistic regression model. The following 10 features were selected by the algorithm.  
+
+\begin{table}[h]
+    \caption{Feature Selection}
+    \label{Unprocessed Data}
+    \centering
+    % \resizebox{\columnwidth}{!}{
+    \input{selected.tex}
+    % }
+\end{table}
+
+\subsection{Training Test Split}
+
+The data was split was into 70\% training and 30\% test subsects. 
+
+\newpage
+\subsection{Random Forest}
+
+Random Forest classification was performed on the training data and the mdoel was used to predict the test data for accuracy comparison. The classificiation report for the Random Forest model: 
+
+\begin{table}[h]
+    \caption{RF Classification Report}
+    \label{Unprocessed Data}
+    \centering
+    % \resizebox{\columnwidth}{!}{
+    \input{classification-rf.tex}
+    % }
+\end{table}
+
+\subsection{Support Vector Machine}
+
+Support Vector Machine classification was performed on the training data and the model was used to predict the test data for accuracy comparison. The classification report for the SVM model: 
+
+\begin{table}[h]
+    \caption{SVM Classification Report}
+    \label{Unprocessed Data}
+    \centering
+    % \resizebox{\columnwidth}{!}{
+    \input{classification-svm.tex}
+    % }
+\end{table}
+
+\subsection{Model Accuracy}
+
+The accuracy score of the models was performed based on their predictions of the test data. 
+
+\begin{table}[h]
+    \caption{Model Accuracy}
+    \label{Unprocessed Data}
+    \centering
+    % \resizebox{\columnwidth}{!}{
+    \input{accuracy.tex}
+    % }
+\end{table}
+
+\section{Conclusion}
+
+Random Forest classification and Support Vector Machine were used to predict the attrition of employees based on features in a dataset. The SVM performed better than the RF classifier. 
+
+\end{document}
