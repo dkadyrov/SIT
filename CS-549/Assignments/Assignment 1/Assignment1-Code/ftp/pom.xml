@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>edu.stevens.cs549</groupId>
+	<artifactId>ftp</artifactId>
+	<version>0.0.3-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>FTP</name>
+	<url>http://maven.apache.org</url>
+
+	<licenses>
+		<license></license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>dduggan</id>
+			<name>Dominic Duggan</name>
+			<email>dduggan@stevens.edu</email>
+			<url>http://www.dominicduggan.org</url>
+			<organization>Stevens Institute of Technology</organization>
+			<organizationUrl>http://www.stevens.edu</organizationUrl>
+		</developer>
+	</developers>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Really these should be command-line arguments. However ftp.sh requires 
+			external DNS name for SERVERHOST property, which sets rmi server code base 
+			hostname. -->
+		<server.internal-ip>10.50.198.208</server.internal-ip>
+		<client.internal-ip>10.50.198.208</client.internal-ip>
+		<server.external-dns>ec2-23-20-36-165.compute-1.amazonaws.com</server.external-dns>
+
+		<!-- Lookup the server factory at the rmi registry at this port under this 
+			dns name. -->
+		<server.port>5050</server.port>
+		<server.name>ftpd</server.name>
+		<client.name>ftp</client.name>
+
+		<!-- Where to distribute jar files (using mvn package). -->
+		<client.dist>${user.home}/tmp/cs549/ftp-test</client.dist>
+		<server.dist>${client.dist}</server.dist>
+
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>project</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.1</version>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<modules>
+		<module>ftpinterface</module>
+		<module>ftpserver</module>
+		<module>ftpclient</module>
+	</modules>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<!-- Use this profile for local testing of the server. -->
+			<activation>
+				<property>
+					<name>local</name>
+				</property>
+			</activation>
+			<properties>
+				<client.home>${user.home}</client.home>
+				<!-- If testing server on Windoze, this will have to be modified to ensure 
+					the path does not contain spaces, otherwise RMI will barf during stack inspection. -->
+				<client.testdir>${client.home}/tmp/cs549/ftp-test</client.testdir>
+
+				<server.machine>localhost</server.machine>
+				<server.ip>localhost</server.ip>
+				<server.home>${client.home}</server.home>
+				<!-- Test directory. -->
+				<server.testdir>${client.testdir}</server.testdir>
+				<!-- Root of file system provided by server. -->
+				<server.path>${server.testdir}/root</server.path>
+				<!-- Server code base. -->
+				<server.codebase>file:${server.testdir}/${server.name}.jar</server.codebase>
+				<!-- Client code base. -->
+				<client.codebase>file:${client.testdir}/${client.name}.jar</client.codebase>
+			</properties>
+		</profile>
+		<profile>
+			<id>remote</id>
+			<!-- Use this profile for remote testing of the server. -->
+			<activation>
+				<property>
+					<name>remote</name>
+				</property>
+			</activation>
+			<properties>
+				<client.home>/home/ec2-user</client.home>
+				<client.testdir>${client.home}/tmp/cs549/ftp-test</client.testdir>
+
+				<server.machine>${server.external-dns}</server.machine>
+				<server.ip>${server.internal-ip}</server.ip>
+				<server.userid>ec2-user</server.userid>
+				<server.home>/home/${server.userid}</server.home>
+				<!-- Test directory. -->
+				<server.testdir>${server.home}/tmp/cs549/ftp-test</server.testdir>
+				<!-- Root of file system provided by server. -->
+				<server.path>${server.testdir}/root</server.path>
+				<!-- Server code base. -->
+				<server.codebase>http://${server.machine}/~${server.userid}/${server.name}.jar</server.codebase>
+				<!-- Client code base. -->
+				<client.codebase>http://${server.machine}/~${server.userid}/${client.name}.jar</client.codebase>
+			</properties>
+		</profile>
+		<profile>
+			<id>not-mac</id>
+			<!-- On a non-Mac machine, make this activeByDefault to include tools.jar. -->
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.sun</groupId>
+					<artifactId>tools</artifactId>
+					<version>1.5</version>
+					<scope>system</scope>
+					<systemPath>${java.home}/../lib/tools.jar</systemPath>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
+</project>

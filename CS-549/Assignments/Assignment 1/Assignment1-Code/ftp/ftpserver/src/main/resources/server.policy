@@ -1,0 +1,15 @@
+grant codeBase "file:${server.home}/-" {
+    // permission java.security.AllPermission;
+    permission java.io.FilePermission "${server.path}", "read, write";
+    permission java.io.FilePermission "${server.path}/-", "read, write";
+    permission java.net.SocketPermission "*", "accept, connect, listen, resolve";
+
+};
+
+grant codeBase "${server.codebase}" {
+    // permission java.security.AllPermission;
+    permission java.io.FilePermission "${server.path}", "read, write";
+    permission java.io.FilePermission "${server.path}/-", "read, write";
+    permission java.net.SocketPermission "*", "accept, connect, listen, resolve";
+
+};
