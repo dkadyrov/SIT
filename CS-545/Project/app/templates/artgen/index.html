@@ -1,0 +1,14 @@
+{% extends 'base_template.html' %}
+{% load static %}
+
+{% block content %}
+{% if artlist %}
+    <ul>
+    {% for art in artlist %}
+        {{ art.id }}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No arts are available</p>
+{% endif %}
+{% endblock %}

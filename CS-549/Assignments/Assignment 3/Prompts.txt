@@ -1,0 +1,43 @@
+java -jar dht.jar --http 9000 --id 25 --host localhost
+java -jar dht.jar --http 9001 --id 33 --host localhost
+java -jar dht.jar --http 9002 --id 45 --host localhost
+java -jar dht.jar --http 9003 --id 50 --host localhost
+
+
+join http://localhost:9001/dht
+
+add foo foobar
+get foo
+
+add fubar foobaz
+get fubar
+
+add foo2 foobar2
+
+add baz foobar2
+
+listenOn baz
+
+add baz foobar3
+add baz foobar4
+
+listenOff baz
+
+add baz foobar5
+
+listenOn baz 
+listenOn fubar
+
+add baz foobar4 
+add fubar foobaz2
+
+bindings (on all instances)
+routes (on all instances)
+
+
+java -jar dht.jar --http 9000 --id 25 --host 172.31.60.40
+java -jar dht.jar --http 9001 --id 33 --host 172.31.51.114
+java -jar dht.jar --http 9002 --id 45 --host 172.31.48.223
+java -jar dht.jar --http 9003 --id 50 --host 172.31.49.168
+
+join http://172.31.60.40:9000/dht

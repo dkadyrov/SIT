@@ -1,8 +1,11 @@
 package edu.stevens.cs549.ftpserver;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -10,6 +13,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Enumeration;
 import java.util.Stack;
@@ -36,7 +40,7 @@ public class Server extends UnicastRemoteObject
 	 */
 	private InetAddress host;
 	
-	final static int backlog = 5;
+	final static int BACKLOG_LENGTH = 5;
 	
 	/*
 	 *********************************************************************************************
@@ -60,10 +64,11 @@ public class Server extends UnicastRemoteObject
     
     private ServerSocket dataChan = null;
     
-    private InetSocketAddress makePassive () throws IOException {
-    	dataChan = new ServerSocket(0, backlog, host);
+    private int makePassive () throws IOException {
+    	dataChan = new ServerSocket(0, BACKLOG_LENGTH, host);
     	mode = Mode.PASSIVE;
-    	return (InetSocketAddress)(dataChan.getLocalSocketAddress());
+//    	return (InetSocketAddress)(dataChan.getLocalSocketAddress());
+    	return dataChan.getLocalPort();
     }
     
     /*
@@ -71,8 +76,13 @@ public class Server extends UnicastRemoteObject
      */
     private InetSocketAddress clientSocket = null;
     
-    private void makeActive (InetSocketAddress s) {
-    	clientSocket = s;
+    private void makeActive (int clientPort) {
+//    	clientSocket = s;
+    	try {
+			clientSocket = InetSocketAddress.createUnresolved(getClientHost(), clientPort);
+		} catch (ServerNotActiveException e) {
+			throw new IllegalStateException ("Make active", e);
+		}
     	mode = Mode.ACTIVE;
     }
     
@@ -108,8 +118,32 @@ public class Server extends UnicastRemoteObject
     	public GetThread (ServerSocket s, FileInputStream f) { dataChan = s; file = f; }
     	public void run () {
     		/*
-    		 * TODO: Process a client request to transfer a file.
+    		 * TODO: Process a client request to transfer a file. KADYROV.
     		 */
+			try {
+				Socket socket = dataChan.accept();
+
+				BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+				BufferedInputStream bis = new BufferedInputStream(file);
+
+				byte[] fileBuffer = new byte[1024];
+				int offset = 0;
+				while ((offset = bis.read(fileBuffer)) != -1) {
+					bos.write(fileBuffer, 0, offset);
+				}
+				if (bis != null)
+					bis.close();
+				if (bos != null)
+					bos.close();
+				if (file != null)
+					file.close();
+				if (socket != null)
+					socket.close();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     }
     
@@ -121,8 +155,24 @@ public class Server extends UnicastRemoteObject
         	/*
         	 * TODO: connect to client socket to transfer file.
         	 */
-        	InputStream in = new FileInputStream(path()+file);
+			InputStream in = new FileInputStream(path() + file);
 
+			BufferedOutputStream bos = new BufferedOutputStream(xfer.getOutputStream());
+			BufferedInputStream bis = new BufferedInputStream(in);
+
+			byte[] fileBuffer = new byte[1024];
+			int offset = 0;
+			while ((offset = bis.read(fileBuffer)) != -1) {
+				bos.write(fileBuffer, 0, offset);
+			}
+			if (bis != null)
+				bis.close();
+			if (bos != null)
+				bos.close();
+			if (in != null)
+				in.close();
+			if (xfer != null)
+				xfer.close();
         	/*
 			 * End TODO.
 			 */
@@ -131,11 +181,75 @@ public class Server extends UnicastRemoteObject
             new Thread (new GetThread(dataChan, f)).start();
         }
     }
-    
+
+	private static class PutThread implements Runnable {
+		private ServerSocket dataChan = null;
+		private FileOutputStream file = null;
+
+		public PutThread(ServerSocket s, FileOutputStream f) {
+			dataChan = s;
+			file = f;
+		}
+
+		public void run() {
+			/*
+			 * TODO: Process a client request to transfer a file.
+			 */
+			try {
+				Socket socket = dataChan.accept();
+				BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
+				FileOutputStream fos = file;
+
+				int offset = 0;
+				byte[] fileBuffer = new byte[1024];
+				while ((offset = bis.read(fileBuffer)) != -1) {
+					fos.write(fileBuffer, 0, offset);
+				}
+				if (fos != null)
+					fos.close();
+				if (bis != null)
+					bis.close();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	}
+
     public void put (String file) throws IOException, FileNotFoundException, RemoteException {
     	/*
-    	 * TODO: Finish put (both ACTIVE and PASSIVE).
+    	 * TODO: Finish put (both ACTIVE and PASSIVE). KADYROV.
     	 */
+		try {
+			if (mode == Mode.ACTIVE) {
+
+				Socket xfer = new Socket(clientSocket.getAddress(), clientSocket.getPort());
+				BufferedInputStream bis = new BufferedInputStream(xfer.getInputStream());
+				FileOutputStream f = new FileOutputStream(path() + file);
+
+				int offset = 0;
+				byte[] fileBuffer = new byte[1024];
+				while ((offset = bis.read(fileBuffer)) != -1) {
+					f.write(fileBuffer, 0, offset);
+				}
+
+				if (bis != null)
+					bis.close();
+				if (f != null)
+					f.close();
+				if (xfer != null)
+					xfer.close();
+
+			} else if (mode == Mode.PASSIVE) {
+				FileOutputStream f = new FileOutputStream(path() + file);
+				new Thread(new PutThread(dataChan, f)).start();
+
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
     
     public String[] dir () throws RemoteException {
@@ -180,11 +294,11 @@ public class Server extends UnicastRemoteObject
     	return pathPrefix+pwd();
     }
     
-    public void port (InetSocketAddress s) {
-    	makeActive(s);
+    public void port (int clientPort) {
+    	makeActive(clientPort);
     }
     
-    public InetSocketAddress pasv () throws IOException {
+    public int pasv () throws IOException {
     	return makePassive();
     }
 

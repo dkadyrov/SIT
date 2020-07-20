@@ -22,6 +22,6 @@ public interface IServer extends Remote {
 
 	public void port(InetSocketAddress s) throws RemoteException;
 
-	public InetSocketAddress pasv() throws IOException, RemoteException;
+	public int pasv() throws IOException, RemoteException;
 
 }

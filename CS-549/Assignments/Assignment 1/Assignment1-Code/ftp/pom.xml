@@ -16,10 +16,10 @@
 	</licenses>
 	<developers>
 		<developer>
-			<id>dduggan</id>
-			<name>Dominic Duggan</name>
-			<email>dduggan@stevens.edu</email>
-			<url>http://www.dominicduggan.org</url>
+			<id>dkadyrov</id>
+			<name>Daniel Kadyrov</name>
+			<email>dkadyrov@stevens.edu</email>
+			<url>http://www.dkadyrov.github.io</url>
 			<organization>Stevens Institute of Technology</organization>
 			<organizationUrl>http://www.stevens.edu</organizationUrl>
 		</developer>
@@ -31,9 +31,9 @@
 		<!-- Really these should be command-line arguments. However ftp.sh requires 
 			external DNS name for SERVERHOST property, which sets rmi server code base 
 			hostname. -->
-		<server.internal-ip>10.50.198.208</server.internal-ip>
-		<client.internal-ip>10.50.198.208</client.internal-ip>
-		<server.external-dns>ec2-23-20-36-165.compute-1.amazonaws.com</server.external-dns>
+		<server.internal-ip>172.31.55.161</server.internal-ip>
+		<client.internal-ip>172.31.58.168</client.internal-ip>
+		<server.external-dns>ec2-100-25-200-62.compute-1.amazonaws.com</server.external-dns>
 
 		<!-- Lookup the server factory at the rmi registry at this port under this 
 			dns name. -->

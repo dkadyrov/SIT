@@ -15,10 +15,5 @@ if [ ! -e $POLICY ] ; then
 fi
 
 echo "Running client"
-<<<<<<< HEAD
 echo "java -Djava.security.policy=$POLICY -jar $JARFILE $*"
-java -Djava.security.policy=$POLICY -jar $JARFILE $*
-=======
-echo "java -Djava.security.policy=$POLICY -jar $JARFILE"
-java -Djava.security.policy=$POLICY -jar $JARFILE
->>>>>>> 295e9d230e4fb30a0f637417a0dbabdff205c05b
+java -Djava.security.policy=$POLICY -jar $JARFILE $*x

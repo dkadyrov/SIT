@@ -5,9 +5,12 @@
 
 package edu.stevens.cs549.ftpclient;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +20,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -27,12 +32,19 @@ import java.util.logging.Logger;
 // import org.apache.log4j.PropertyConfigurator;
 
 import edu.stevens.cs549.ftpinterface.IServer;
+import edu.stevens.cs549.ftpinterface.IServerFactory;
 
 /**
  * 
  * @author dduggan
  */
 public class Client {
+	
+	enum Mode {
+		NONE, PASSIVE, ACTIVE
+	};
+	
+	private static int BACKLOG_LENGTH = 5;
 
 	private static String clientPropsFile = "/client.properties";
 	private static String loggerPropsFile = "/log4j.properties";
@@ -45,26 +57,26 @@ public class Client {
 	
 	private static Logger log = Logger.getLogger(Client.class.getCanonicalName());
 
-	public void severe(String s) {
+	public void severe(final String s) {
 		log.severe(s);
 	}
 
-	public void warning(String s) {
+	public void warning(final String s) {
 		log.info(s);
 	}
 
-	public void info(String s) {
+	public void info(final String s) {
 		log.info(s);
 	}
 
-	protected List<String> processArgs(String[] args) {
-		List<String> commandLineArgs = new ArrayList<String>();
+	protected List<String> processArgs(final String[] args) {
+		final List<String> commandLineArgs = new ArrayList<String>();
 		int ix = 0;
-		Hashtable<String, String> opts = new Hashtable<String, String>();
+		final Hashtable<String, String> opts = new Hashtable<String, String>();
 
 		while (ix < args.length) {
 			if (args[ix].startsWith("--")) {
-				String option = args[ix++].substring(2);
+				final String option = args[ix++].substring(2);
 				if (ix == args.length || args[ix].startsWith("--"))
 					severe("Missing argument for --" + option + " option.");
 				else if (opts.containsKey(option))
@@ -78,9 +90,9 @@ public class Client {
 		/*
 		 * Overrides of values from configuration file.
 		 */
-		Enumeration<String> keys = opts.keys();
+		final Enumeration<String> keys = opts.keys();
 		while (keys.hasMoreElements()) {
-			String k = keys.nextElement();
+			final String k = keys.nextElement();
 			if ("clientIp".equals(k))
 				clientIp = opts.get("host");
 			else if ("serverAddr".equals(k))
@@ -97,26 +109,26 @@ public class Client {
 	 * @param args
 	 *            the command line arguments
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		if (System.getSecurityManager() == null) {
 			System.setSecurityManager(new SecurityManager());
 		}
 		new Client(args);
 	}
 	
-	public Client(String[] args) {
+	public Client(final String[] args) {
 		try {
 			// PropertyConfigurator.configure(getClass().getResource(loggerPropsFile));
 			/*
 			 * Load server properties.
 			 */
-			Properties props = new Properties();
-			InputStream in = getClass().getResourceAsStream(clientPropsFile);
+			final Properties props = new Properties();
+			final InputStream in = getClass().getResourceAsStream(clientPropsFile);
 			props.load(in);
 			in.close();
 			clientIp = (String) props.get("client.ip");
 			serverAddr = (String) props.get("server.machine");
-			String serverName = (String) props.get("server.name");
+			final String serverName = (String) props.get("server.name");
 			serverPort = Integer.parseInt((String) props.get("server.port"));
 			
 			/*
@@ -125,56 +137,57 @@ public class Client {
 			processArgs(args);
 			
 			/*
-			 * TODO: Get a server proxy.
+			 * TODO: Get a server proxy. KADYROV.
 			 */
 			
-			IServer server = null;
-			
+			final Registry registry = LocateRegistry.getRegistry(serverAddr, serverPort);
+			final IServerFactory serverFactory = (IServerFactory) registry.lookup(serverName);
+			final IServer server = serverFactory.createServer();
 			/*
 			 * Start CLI.  Second argument should be server proxy.
 			 */
 			cli(serverAddr, server);
 
-		} catch (java.io.FileNotFoundException e) {
+		} catch (final java.io.FileNotFoundException e) {
 			log.severe("Client error: " + clientPropsFile + " file not found.");
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			log.severe("Client error: IO exception.");
 			e.printStackTrace();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.severe("Client exception:");
 			e.printStackTrace();
 		}
 
 	}
 
-	static void msg(String m) {
+	static void msg(final String m) {
 		System.out.print(m);
 	}
 
-	static void msgln(String m) {
+	static void msgln(final String m) {
 		System.out.println(m);
 	}
 
-	static void err(Exception e) {
+	static void err(final Exception e) {
 		System.err.println("Error : "+e);
 		e.printStackTrace();
 	}
 
-	public static void cli(String svrHost, IServer svr) {
+	public void cli(final String svrHost, final IServer svr) {
 
 		// Main command-line interface loop
 
 		try {
-			InetAddress serverAddress = InetAddress.getByName(svrHost);
-			Dispatch d = new Dispatch(svr, serverAddress);
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+			final InetAddress serverAddress = InetAddress.getByName(svrHost);
+			final Dispatch d = new Dispatch(svr, serverAddress);
+			final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
 			while (true) {
 				msg("ftp> ");
-				String line = in.readLine();
-				String[] inputs = line.split("\\s+");
+				final String line = in.readLine();
+				final String[] inputs = line.split("\\s+");
 				if (inputs.length > 0) {
-					String cmd = inputs[0];
+					final String cmd = inputs[0];
 					if (cmd.length()==0)
 						;
 					else if ("get".equals(cmd))
@@ -201,11 +214,11 @@ public class Client {
 						msgln("Bad input.  Type \"help\" for more information.");
 				}
 			}
-		} catch (EOFException e) {
-		} catch (UnknownHostException e) {
+		} catch (final EOFException e) {
+		} catch (final UnknownHostException e) {
 			err(e);
 			System.exit(-1);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			err(e);
 			System.exit(-1);
 		}
@@ -213,18 +226,18 @@ public class Client {
 
 	}
 
-	public static class Dispatch {
+	public class Dispatch {
 
-		private IServer svr;
+		private final IServer svr;
 		
-		private InetAddress serverAddress;
+		private final InetAddress serverAddress;
 
-		Dispatch(IServer s, InetAddress sa) {
+		Dispatch(final IServer s, final InetAddress sa) {
 			svr = s;
 			serverAddress = sa;
 		}
 
-		public void help(String[] inputs) {
+		public void help(final String[] inputs) {
 			if (inputs.length == 1) {
 				msgln("Commands are:");
 				msgln("  get filename: download file from server");
@@ -244,9 +257,6 @@ public class Client {
 		 * Data connection.
 		 */
 
-		enum Mode {
-			NONE, PASSIVE, ACTIVE
-		};
 
 		/*
 		 * Note: This refers to the mode of the SERVER.
@@ -260,29 +270,31 @@ public class Client {
 		private ServerSocket dataChan = null;
 
 		private InetSocketAddress makeActive() throws IOException {
-			dataChan = new ServerSocket(0);
+			final InetAddress myAddr = InetAddress.getByName(clientIp);
+			dataChan = new ServerSocket(0, BACKLOG_LENGTH, myAddr);
 			mode = Mode.ACTIVE;
 			/* 
 			 * Note: this only works (for the server) if the client is not behind a NAT.
 			 */
 			return (InetSocketAddress) (dataChan.getLocalSocketAddress());
+//			return dataChan.getLocalPort();
 		}
 
 		/*
 		 * If passive mode, remember the server socket address.
 		 */
 		private InetSocketAddress serverSocket = null;
-
-		private void makePassive(InetSocketAddress s) {
-			serverSocket = s;
+		
+		private void makePassive(final int serverPort) {
+	    	serverSocket = InetSocketAddress.createUnresolved(serverAddr, serverPort);
 			mode = Mode.PASSIVE;
-		}
+	    }
 
 		/*
 		 * *********************************************************************************************
 		 */
 
-		private static class GetThread implements Runnable {
+		private class GetThread implements Runnable {
 			/*
 			 * This client-side thread runs when the server is active mode and a
 			 * file download is initiated. This thread listens for a connection
@@ -293,7 +305,7 @@ public class Client {
 			private ServerSocket dataChan = null;
 			private FileOutputStream file = null;
 
-			public GetThread(ServerSocket s, FileOutputStream f) {
+			public GetThread(final ServerSocket s, final FileOutputStream f) {
 				dataChan = s;
 				file = f;
 			}
@@ -301,13 +313,122 @@ public class Client {
 			public void run() {
 				try {
 					/*
-					 * TODO: Complete this thread.
+					 * TODO: Complete this thread. KADYROV.
 					 */
-					Socket xfer = dataChan.accept();
+
+					final Socket xfer = dataChan.accept();
+					final BufferedInputStream bis = new BufferedInputStream(xfer.getInputStream());
+
+					final byte[] fileBuffer = new byte[1024];
+					int bytesRead = 0;
+					bytesRead = bis.read(fileBuffer, 0, fileBuffer.length);
+					int offset = bytesRead;
+
+					do {
+						bytesRead = bis.read(fileBuffer, offset, (fileBuffer.length - offset));
+						if (bytesRead >= 0)
+							offset += bytesRead;
+					} while (bytesRead > -1);
+
+					file.write(fileBuffer, 0, offset);
+					file.flush();
+
+					if (bis != null)
+						bis.close();
+					if (file != null)
+						file.close();
+					if (xfer != null)
+						xfer.close();
 
 					/*
 					 * End TODO
 					 */
+				} catch (final IOException e) {
+					msg("Exception: " + e);
+					e.printStackTrace();
+				}
+			}
+		}
+
+		public void get(final String[] inputs) {
+			if (inputs.length == 2) {
+				try {
+					if (mode == Mode.PASSIVE) {
+						svr.get(inputs[1]);
+						final FileOutputStream f = new FileOutputStream(inputs[1]);
+						final Socket xfer = new Socket(serverAddress, serverSocket.getPort());
+						/*
+						 * TODO: connect to server socket to transfer file.
+						 */
+						BufferedInputStream bis = new BufferedInputStream(xfer.getInputStream());
+
+						byte[] fileBuffer = new byte[1024];
+						int bytesRead = 0;
+						bytesRead = bis.read(fileBuffer, 0, fileBuffer.length);
+						int offset = bytesRead;
+
+						do {
+							bytesRead = bis.read(fileBuffer, offset, (fileBuffer.length - offset));
+							if (bytesRead >= 0)
+								offset += bytesRead;
+						} while (bytesRead > -1);
+
+						f.write(fileBuffer, 0, offset);
+						f.flush();
+
+						if (bis != null)
+							bis.close();
+						if (f != null)
+							f.close();
+						if (xfer != null)
+							xfer.close();
+					} else if (mode == Mode.ACTIVE) {
+						final FileOutputStream f = new FileOutputStream(inputs[1]);
+						new Thread(new GetThread(dataChan, f)).start();
+						svr.get(inputs[1]);
+					} else {
+						msgln("GET: No mode set--use port or pasv command.");
+					}
+				} catch (final Exception e) {
+					err(e);
+				}
+			}
+		}
+
+		private class PutThread implements Runnable {
+			/*
+			 * This client-side thread runs when the server is active mode and a file
+			 * download is initiated. This thread listens for a connection request from the
+			 * server. The client-side server socket (...) should have been created when the
+			 * port command put the server in active mode.
+			 */
+			private ServerSocket dataChan = null;
+			private FileInputStream file = null;
+
+			public PutThread(ServerSocket s, FileInputStream f) {
+				dataChan = s;
+				file = f;
+			}
+
+			public void run() {
+				try {
+					Socket socket = dataChan.accept();
+					BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+					FileInputStream f = file;
+					BufferedInputStream bis = new BufferedInputStream(f);
+					byte[] fileBuffer = new byte[1024];
+					int offset = 0;
+					while ((offset = bis.read(fileBuffer)) != -1) {
+						bos.write(fileBuffer, 0, offset);
+					}
+					if (bis != null)
+						bis.close();
+					if (bos != null)
+						bos.close();
+					if (f != null)
+						f.close();
+					if (socket != null)
+						socket.close();
 				} catch (IOException e) {
 					msg("Exception: " + e);
 					e.printStackTrace();
@@ -315,99 +436,108 @@ public class Client {
 			}
 		}
 
-		public void get(String[] inputs) {
-			if (inputs.length == 2) {
-				try {
-					if (mode == Mode.PASSIVE) {
-						svr.get(inputs[1]);
-						FileOutputStream f = new FileOutputStream(inputs[1]);
-						Socket xfer = new Socket(serverAddress, serverSocket.getPort());
-						/*
-						 * TODO: connect to server socket to transfer file.
-						 */
-					} else if (mode == Mode.ACTIVE) {
-						FileOutputStream f = new FileOutputStream(inputs[1]);
-						new Thread(new GetThread(dataChan, f)).start();
-						svr.get(inputs[1]);
-					} else {
-						msgln("GET: No mode set--use port or pasv command.");
-					}
-				} catch (Exception e) {
-					err(e);
-				}
-			}
-		}
-
-		public void put(String[] inputs) {
+		public void put(final String[] inputs) {
 			if (inputs.length == 2) {
 				try {
 					/*
-					 * TODO: Finish put (both ACTIVE and PASSIVE mode supported).
+					 * TODO: Finish put (both ACTIVE and PASSIVE mode supported). KADYROV.
 					 */
-				} catch (Exception e) {
+					if (mode == Mode.ACTIVE) {
+						FileInputStream f = new FileInputStream(inputs[1]);
+						new Thread(new PutThread(dataChan, f)).start();
+						svr.put(inputs[1]);
+					} else if (mode == Mode.PASSIVE) {
+
+						Socket socket = new Socket(serverAddress, serverSocket.getPort());
+						svr.put(inputs[1]);
+
+						BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+						InputStream f = new FileInputStream(inputs[1]);
+						BufferedInputStream bis = new BufferedInputStream(f);
+
+						byte[] fileBuffer = new byte[1024];
+						int offset = 0;
+						while ((offset = bis.read(fileBuffer)) != -1) {
+							bos.write(fileBuffer, 0, offset);
+						}
+
+						if (bis != null)
+							bis.close();
+						if (bos != null)
+							bos.close();
+						if (f != null)
+							f.close();
+						if (socket != null)
+							socket.close();
+
+					} else {
+						msgln("GET: No mode set up");
+					}
+				} catch (final Exception e) {
 					err(e);
 				}
 			}
 		}
 
-		public void cd(String[] inputs) {
+		public void cd(final String[] inputs) {
 			if (inputs.length == 2)
 				try {
 					svr.cd(inputs[1]);
 					msgln("CWD: "+svr.pwd());
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					err(e);
 				}
 		}
 
-		public void pwd(String[] inputs) {
+		public void pwd(final String[] inputs) {
 			if (inputs.length == 1)
 				try {
 					msgln("CWD: "+svr.pwd());
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					err(e);
 				}
 		}
 
-		public void dir(String[] inputs) {
+		public void dir(final String[] inputs) {
 			if (inputs.length == 1) {
 				try {
-					String[] fs = svr.dir();
+					final String[] fs = svr.dir();
 					for (int i = 0; i < fs.length; i++) {
 						msgln(fs[i]);
 					}
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					err(e);
 				}
 			}
 		}
 
-		public void pasv(String[] inputs) {
+		public void pasv(final String[] inputs) {
 			if (inputs.length == 1) {
 				try {
 					makePassive(svr.pasv());
 					msgln("PASV: Server in passive mode.");
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					err(e);
 				}
 			}
 		}
 
-		public void port(String[] inputs) {
+		public void port(final String[] inputs) {
 			if (inputs.length == 1) {
 				try {
-					InetSocketAddress s = makeActive();
+//					InetSocketAddress s = makeActive();
+					final InetSocketAddress s = makeActive();
 					svr.port(s);
 					msgln("PORT: Server in active mode.");
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					err(e);
 				}
 			}
 		}
 
-		public void ldir(String[] inputs) {
+		public void ldir(final String[] inputs) {
 			if (inputs.length == 1) {
-				String[] fs = new File(".").list();
+				final String[] fs = new File(".").list();
 				for (int i = 0; i < fs.length; i++) {
 					msgln(fs[i]);
 				}
