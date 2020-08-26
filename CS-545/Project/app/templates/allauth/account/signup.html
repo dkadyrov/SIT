@@ -2,20 +2,58 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block head_title %}{% trans "ArtGen - New Account" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
+<br />
+<h1 class="login-title">{% trans "ArtGen - New Account" %}</h1>
+<br />
+<div class="form-container">
+  <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+    {% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+    <p class="errornote">
+        {{ error }}
+    </p>
+    {% endfor %}
+    {% endif %}
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    <div class="form-group">
+      {{ form.email.errors }}
+      <div class="form-control form-input"> {{ form.email }} </div>
+    </div>
+
+    <div class="form-group">
+      {{ form.username.errors }}
+      <div class="form-control form-input"> {{ form.username }} </div>
+    </div>
+
+    <div class="form-group">
+      {{ form.password1.errors }}
+      <div class="form-control form-input"> 
+      {{ form.password1 }}
+      <small class = "form-text text-muted">Password must be at least 6 characters</small>
+      </div>
+    </div>
+    
+    <br />
+    {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <button type="submit" style="margin-bottom: 10px;" class="btn btn-primary form-submit-button"><i class="fas fa-thumbs-up"></i> {% trans "Sign Up" %}</button>
+    <a href="{% url 'account_login' %}" style="margin-top: 30px;">Already have an account?</a>
+  </form>
+</div>
+
+<!-- <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
   {{ form.as_p }}
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
   <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+</form> -->
 
 {% endblock %}

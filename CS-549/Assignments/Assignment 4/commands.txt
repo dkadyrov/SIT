@@ -1,0 +1,19 @@
+Graph: 
+
+hdfs dfs -mkdir /input 
+hdfs dfs -mkdir /cache
+hdfs dfs -put graph.txt /input 
+hdfs dfs -put names.txt /cache
+
+
+hadoop namenode -format
+
+start-all.sh
+stop-all.sh
+
+hdfs dfs -cat /input/graph.txt
+hdfs dfs -cat /cache/names.txt
+
+hadoop jar PageRank-1.0.0.jar edu.stevens.cs549.hadoop.pagerank.PageRankDriver composite /input /output inter1 inter2 diffdir 10
+
+hdfs dfs -cat /output/output.txt

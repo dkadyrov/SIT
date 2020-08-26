@@ -1,0 +1,47 @@
+body {
+    text-align: center;
+    font-family: "patrick hand";
+}
+
+.form-container {
+    width: 30vw;
+    margin: 0 auto;
+}
+
+.form-submit-button {
+    width: 100%;
+    border-radius: 2px;
+    box-shadow: 2px 2px 2px darkslategray;
+    background-color: #6ed8a8;
+    border-color: #6ed8a8;
+    color:black;
+}
+
+.form-submit-button:hover {
+    background-color: #67c79c;
+    border-color: #67c79c;
+}
+
+.form-input {
+    border-radius: 1px;
+    border: 1px solid black;
+}
+
+.invert-button {
+    background-color: black;
+    color:white;
+    border-color: black;
+}
+
+.invert-button:hover {
+    background-color: darkslategrey;
+    border-color: darkslategrey;
+}
+
+/* ===================  Login Page  =================*/
+.login-title {
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 5%;
+    font-size: 300%;
+}

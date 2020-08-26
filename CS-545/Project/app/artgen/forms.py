@@ -8,12 +8,14 @@ from django import forms
 from .models import Art
 
 class ArtForm(forms.ModelForm):
-    image_1 = forms.FileField()
-    image_2 = forms.FileField()
-
+    # image_1 = forms.FileField()
+    # image_2 = forms.FileField()
+    # title = forms.CharField(max_length=50)
+    # image_1 = forms.FileField()
+    # image_2 =
     class Meta:
         model = Art
-        fields = ('title', 'image_1', 'image_2')
+        fields = ('title', 'image_1', 'image_2', )
 
 
 class CustomUserCreationForm(SignupForm):

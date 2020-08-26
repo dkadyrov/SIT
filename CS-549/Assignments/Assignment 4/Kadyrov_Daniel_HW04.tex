@@ -1,0 +1,199 @@
+\documentclass{homework}
+
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+\usepackage{lmodern}
+\usepackage{mdframed}
+\definecolor{blockquote-border}{RGB}{221,221,221}
+\definecolor{blockquote-text}{RGB}{119,119,119}
+\newmdenv[rightline=false,bottomline=false,topline=false,linewidth=2pt,linecolor=blockquote-border,skipabove=\parskip]{customblockquote}
+\renewenvironment{quote}{\vspace{6pt plus 2pt minus 1pt}\begin{customblockquote}\fontfamily{lmtt}\selectfont\list{}{\rightmargin=0.75em\leftmargin=0.75em}%
+\item\relax\color{blockquote-text}\ignorespaces}{\unskip\unskip\endlist\end{customblockquote}}
+
+
+\Title{Assignment \#4 - Page Rank in Hadoop}
+\DueDate{August 9th, 2020}
+\ClassName{Distributed Systems and Cloud Computing}
+\ClassNumber{CS549WS}
+\ClassSection{Summer 2020}
+\Instructor{Professor Dominic Duggan}
+\Author{Daniel Kadyrov}
+\AuthorID{10455680}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+This assignment focuses on implementing a Page Ranking algorithm to sort the most popular Wikipedia pages from a provided previously downloaded set. Changes were made to the files shown in the following section. A test using a graph was performed using Hadoop on a local machine was performed. The Page Ranking script was then used on AWS EMR on 5, 10, and 20 clusters. 
+
+\newpage
+\section{Changes within Provided Files}
+
+\subsection{DiffMap1}
+\lstinputlisting[language=Java, caption={DiffMap1.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/DiffMap1.java}
+
+\newpage
+\subsection{DiffMap2}
+\lstinputlisting[language=Java, caption={DiffMap2.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/DiffMap2.java}
+
+\newpage
+\subsection{DiffRed1}
+\lstinputlisting[language=Java, caption={DiffRed1.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/DiffRed1.java}
+
+\newpage
+\subsection{DiffRed2}
+\lstinputlisting[language=Java, caption={DiffRed2.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/DiffRed2.java}
+
+\newpage
+\subsection{FinMapper}
+\lstinputlisting[language=Java, caption={FinMapper.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/FinMapper.java}
+
+\newpage
+\subsection{FinReducer}
+\lstinputlisting[language=Java, caption={FinReducer.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/FinReducer.java}
+
+\newpage
+\subsection{InitMapper}
+\lstinputlisting[language=Java, caption={InitMapper.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/InitMapper.java}
+
+\newpage
+\subsection{InitReducer}
+\lstinputlisting[language=Java, caption={InitReducer.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/InitReducer.java}
+
+\newpage
+\subsection{JoinMapper}
+\lstinputlisting[language=Java, caption={JoinMapper.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/JoinMapper.java}
+
+\newpage
+\subsection{JoinReducer}
+\lstinputlisting[language=Java, caption={JoinReducer.java}]{Assignment4-Code/page-rank/src/edu/stevens/cs549/hadoop/pagerank/JoinReducer.java}
+
+\newpage
+\section{Running on Local Machine}
+
+\subsection{Graph Files} 
+
+\begin{lstlisting}[caption={sample.txt}]
+1: 2 3 
+2: 4
+3: 1 4 5
+4: 
+5: 1 4
+\end{lstlisting}
+
+\begin{lstlisting}[caption={names.txt}]
+1: v1 
+2: v2
+3: v3
+4: v4
+5: v5
+\end{lstlisting}
+
+\begin{lstlisting}[caption={output.txt}]
+4:0	1.708333333333333
+1:0	0.8583333333333333
+3:0	0.575
+2:0	0.575
+5:0	0.43333333333333335
+\end{lstlisting}
+
+\subsection{Run Tests}
+
+The following command was used to test the local hadoop graph ranking algorithm. 
+
+\begin{lstlisting}[language=Bash, caption={Local Command}]
+edu.stevens.cs549.hadoop.pagerank.PageRankDriver composite s3://cs549/input s3://cs549/output inter1 inter2 diff 10
+\end{lstlisting}
+
+\begin{table}[h]
+    \caption{Spread of COVID-19 by Continent}
+    \centering
+    \begin{tabular}{|ll|}
+    \hline
+    Number of Reducers & Processing Time \\ \hline
+    5                  & 13s             \\
+    10                 & 18s             \\
+    20                 & 40s             \\ \hline
+    \end{tabular}
+\end{table}
+
+Increasing the number of reducers increases the processing time of the algorithm.
+
+
+\newpage
+\section{Running on EMR}
+
+\begin{lstlisting}[language=Bash, caption={Custom JAR Command}]
+edu.stevens.cs549.hadoop.pagerank.PageRankDriver composite s3://cs549/input s3://cs549/output inter1 inter2 diff 10
+\end{lstlisting}
+
+The algorithm took 23 minutes to run on a 5 machine cluster with 10 reducers. The following ranking was outputted: 
+
+\begin{lstlisting}[caption={output.txt}]
+    5302153:0	12810.69631667126
+    84707:0	8159.113728956683
+    88822:0	7886.093686178045
+    1921890:0	7275.127835822817
+    5300058:0	5826.635099830321
+    81615:0	5014.404767519376
+    1804986:0	4197.8888148045
+    5535280:0	4164.226675136804
+    896161:0	3769.910788409694
+    5535664:0	3714.2571317056295
+    79583:0	3583.7680798360816
+    1601519:0	3488.3225964390367
+    687324:0	3455.841896902911
+    1948883:0	3364.344625704658
+    5308545:0	3190.9223377001085
+    505135:0	3064.802824618247
+    1603276:0	2941.357165895597
+    5596267:0	2914.369814878134
+    2497500:0	2825.4558209203
+    2995510:0	2730.416154609054
+    1650573:0	2659.3656421983587
+    2370447:0	2565.2363930365195
+    77935:0	2528.8948762668074
+    4141787:0	2407.816159087741
+    3492254:0	2356.5909651517313
+    2437900:0	2304.3565862362984
+    2401294:0	2295.6349478790767
+    4189168:0	2293.5300406199854
+    687618:0	2224.083020041053
+    3072654:0	2102.6401724186544
+    434174:0	2102.335180035135
+    3988566:0	2096.664388916008
+    4015997:0	2018.9134163444628
+    686242:0	2005.6101902332678
+    4696900:0	1961.1958496038294
+    76573:0	1960.9973826414164
+    4351989:0	1959.317983917727
+    478879:0	1904.298745200261
+    3603437:0	1898.3236554574517
+    5115901:0	1879.5875947888485
+    2876077:0	1846.0542169601665
+    1386743:0	1841.197756971188
+    5492723:0	1780.7479241121116
+    3997849:0	1712.6427307459228
+    75323:0	1630.2723881913055
+    3587465:0	1575.4630614468424
+    4089591:0	1571.4228562480328
+    181909:0	1553.487944478633
+    4015913:0	1537.6157012671888
+    3013310:0	1487.1735404348779    
+\end{lstlisting}
+
+\newpage
+When trying to run more than 5 reducers or more than 5 clusters on the Amazon EMR service resulted in the following error: 
+
+\begin{quote}
+    Terminated with errorsThe request to create the EMR cluster or add EC2 instances to it failed. The number of vCPUs for instance type m5.xlarge exceeds the EC2 service quota for that type. Request a service quota increase for your AWS account or choose a different instance type and retry the request. 
+    
+    For more information, see https://docs.aws.amazon.com/console/elasticmapreduce/vcpu-limit
+\end{quote}
+
+I cannot find any information on Canvas about setting up EMR or addressing this issue. I asked a question on Piazza and awaiting for the reply at the time of submitting this assignment.
+
+\end{document}

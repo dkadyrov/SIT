@@ -29,8 +29,18 @@
         <li><a href="{% url 'account_login' %}">Sign In</a></li>
         <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
         {% endif %}
+        <li>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+            <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+          </div>
+        </li>
       </ul>
     </div>
+    
+    
+    <script src="dark-mode-switch.min.js"></script>
+
     {% block content %}
     {% endblock %}
     {% endblock %}

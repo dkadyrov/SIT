@@ -10,6 +10,11 @@ django = "*"
 django-allauth = "*"
 django-crispy-forms = "*"
 django-pure-pagination = "*"
+pillow = "*"
+tensorflow = "*"
+tensorflow-hub = "*"
+ipython = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.8"

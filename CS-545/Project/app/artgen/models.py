@@ -28,10 +28,11 @@ class Art(models.Model):
     title = models.CharField(max_length=200)
     date_created = models.DateTimeField(
         "Created At", auto_now_add=True)    
-    image_1 = models.CharField(max_length=200)
-    image_2 = models.CharField(max_length=200)
-    filepath = models.CharField(max_length=200)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    image_1 = models.ImageField(upload_to='images/')
+    image_2 = models.ImageField(upload_to='images/')
+    filepath = models.ImageField(upload_to='images/', null=True, blank=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    number = models.IntegerField(default=1)
 
     def __str__(self):
         return self.title

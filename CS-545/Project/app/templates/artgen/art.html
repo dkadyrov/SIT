@@ -1,0 +1,12 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+    <h2>{{ art.title }}</h2>
+
+    <img src="{{ art.filepath }}" class="img-fluid" alt="Responsive image">
+    <img src="{{ art.image_1.url }}" class="img-fluid" alt="Responsive image">
+    <img src="{{ art.image_2.url }}" class="img-fluid" alt="Image 2">
+
+    
+
+{% endblock %}
