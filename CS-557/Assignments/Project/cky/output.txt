@@ -1,0 +1,21 @@
+PARSING SNETENCE: the fish
+NUMBER OF PARSES FOUND: 0
+CHART:
+  chart[1,1]: ART
+  chart[1,2]: -
+  chart[2,2]: NOUN
+
+PARSING SNETENCE: the beautiful tropical fish
+NUMBER OF PARSES FOUND: 1
+CHART:
+  chart[1,1]: ART
+  chart[1,2]: -
+  chart[1,3]: -
+  chart[1,4]: S
+  chart[2,2]: ADJ
+  chart[2,3]: -
+  chart[2,4]: X
+  chart[3,3]: ADJ
+  chart[3,4]: NP
+  chart[4,4]: NOUN
+

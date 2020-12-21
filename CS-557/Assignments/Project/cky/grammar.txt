@@ -1,0 +1,9 @@
+S -> ART NP
+S -> ART X
+X -> ADJ X
+X -> ADJ NP
+NP -> ADJ NOUN
+ART -> the
+ADJ -> beautiful
+ADJ -> tropical
+NOUN -> fish
