@@ -9,7 +9,7 @@
   "author": "Daniel Kadyrov 10455680",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "concurrently": "^5.0.0",
     "express": "^4.17.1",
     "node-redis-pubsub": "^4.0.0",
