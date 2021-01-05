@@ -9,6 +9,6 @@
   "author": "Daniel Kadyrov 10456178",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.0"
+    "axios": "^0.21.1"
   }
 }
