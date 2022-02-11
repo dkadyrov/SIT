@@ -13,7 +13,7 @@
     "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
-    "express-handlebars": "^3.1.0",
+    "express-handlebars": "^5.3.1",
     "express-session": "^1.16.2",
     "handlebars-paginate": "^0.1.0",
     "is-image-url": "^1.1.8",
